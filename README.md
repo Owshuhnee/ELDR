@@ -19,11 +19,12 @@ ELDR solves this by providing:
 
 ## 👥 Team
 
-| Name |Primary Role | Secondary Role |
-|---|---|---|---|
+## 👥 Team
+
+| Name | Primary Role | Secondary Role |
+|---|---|---|
 | Ross Crawford | Scrum Master | Frontend/Backend Developer |
 | Jove Tondo | Product Owner | Frontend/Backend Developer |
-
 
 ---
 
@@ -43,6 +44,7 @@ ELDR solves this by providing:
 
 ## 🗂️ Project Structure
 
+```
 eldr/
 ├── frontend/          # Next.js React application
 │   ├── components/    # Reusable UI components
@@ -54,6 +56,7 @@ eldr/
 │   └── middleware/    # Auth and validation middleware
 ├── database/          # PostgreSQL schema and migrations
 └── docs/              # Project documentation
+```
 
 ---
 
