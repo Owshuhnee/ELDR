@@ -19,8 +19,6 @@ ELDR solves this by providing:
 
 ## 👥 Team
 
-## 👥 Team
-
 | Name | Primary Role | Secondary Role |
 |---|---|---|
 | Ross Crawford | Scrum Master | Frontend/Backend Developer |
@@ -105,9 +103,14 @@ npm run dev
 
 ## 📚 Course Information
 
-- **Course:** SD202 Cross-Platform Development
+#### **Course:** SD202 Cross-Platform Development - Project Proposal
 - **Programme:** Diploma in Software Development
 - **Submitted:** April 2026
+
+
+#### **Course:** SD203 Investigative Studio I - Project Implementation
+- **Programme:** Diploma in Software Development
+- **Submitted:** June 2026 (In progress)
 
 
 ---
