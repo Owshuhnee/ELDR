@@ -103,11 +103,20 @@ npm run dev
 
 ## 📚 Course Information
 
+<<<<<<< HEAD
+#### **Course:** SD202 Cross-Platform Development - Project Proposal
+=======
 - **Course:** SD202 Cross-Platform Development - Project Proposal
+>>>>>>> origin/dev
 - **Programme:** Diploma in Software Development
 - **Submitted:** April 2026
 
 - **Course:** SD203 Investigative Studio I - Project Implementation
+- **Programme:** Diploma in Software Development
+- **Submitted:** June 2026 (In progress)
+
+
+#### **Course:** SD203 Investigative Studio I - Project Implementation
 - **Programme:** Diploma in Software Development
 - **Submitted:** June 2026 (In progress)
 
