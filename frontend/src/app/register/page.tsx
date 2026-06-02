@@ -1,4 +1,5 @@
 // REGISTER PAGE
+import Button from '@/components/ui/Button'
 
 export default function RegisterPage() {
     return (
@@ -168,18 +169,7 @@ export default function RegisterPage() {
                 />
 
                 {/* Register Button */}
-                <button type="submit" style={{
-                    width: '100%',
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '24px',
-                    padding: '16px',
-                    fontSize: '18px',
-                    marginBottom: '12px',
-                }}>
-                    Register
-                </button>
+                <Button variant="primary" type="submit">Register</Button>
 
                 {/* Back link */}
                 <a href="/login" style={{
