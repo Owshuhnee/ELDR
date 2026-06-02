@@ -20,8 +20,8 @@ export default function LoginPage() {
             <InputField label="Password" type="password" id="password" name="password" />
 
         {/* BUTTONS */}  
-            <Button variant="primary" type="submit">Login</Button>
-            <Button variant="secondary">Login as Guest</Button>
+            <Button variant="primary" type="submit">Login</Button>                              // Login and go to Products page or Homepage?
+            <Button variant="secondary">Login as Guest</Button>                                 // Go to Products page or Homepage?
 
         <div style={{
             display: 'flex',
@@ -31,6 +31,7 @@ export default function LoginPage() {
             <a href="#">Forgot password?</a>
             <a href="/register">Create Account</a>
         </div>
+
     </AuthCard>
-)
+    )
 }
