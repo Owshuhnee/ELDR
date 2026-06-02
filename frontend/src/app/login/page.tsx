@@ -1,4 +1,5 @@
 // LOGIN PAGE
+import Button from '@/components/ui/Button'
 
 export default function LoginPage() {
     return (
@@ -52,32 +53,9 @@ export default function LoginPage() {
                     }}
                 />
 
-                {/* Buttons */}
-                <button type="submit" style={{
-                    width: '100%',
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '24px',
-                    padding: '16px',
-                    fontSize: '18px',
-                    marginTop: '24px',
-                }}>
-                    Login
-                </button>
-
-                <button type="button" style={{
-                    width: '100%',
-                    backgroundColor: 'transparent',
-                    color: 'var(--color-primary)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '24px',
-                    padding: '16px',
-                    fontSize: '18px',
-                    marginTop: '12px',
-                }}>
-                    Login as Guest
-                </button>
+                {/* Buttons */}    
+                <Button variant="primary" type="submit">Login</Button>
+                <Button variant="secondary">Login as Guest</Button>
 
                 {/* Bottom links */}
                 <div style={{
