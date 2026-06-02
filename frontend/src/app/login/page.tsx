@@ -1,5 +1,6 @@
 // LOGIN PAGE
 import Button from '@/components/ui/Button'
+import InputField from '@/components/ui/InputField'
 
 export default function LoginPage() {
     return (
@@ -25,33 +26,8 @@ export default function LoginPage() {
                     margin: '0 auto 40px',
                 }} />
 
-                {/* Username */}
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                    }}
-                />
-
-                {/* Password */}
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                    }}
-                />
+                <InputField label="Username" id="username" name="username" />
+                <InputField label="Password" type="password" id="password" name="password" />
 
                 {/* Buttons */}    
                 <Button variant="primary" type="submit">Login</Button>

@@ -1,5 +1,6 @@
 // REGISTER PAGE
 import Button from '@/components/ui/Button'
+import InputField from '@/components/ui/InputField'
 
 export default function RegisterPage() {
     return (
@@ -16,7 +17,7 @@ export default function RegisterPage() {
                 padding: '40px',
             }}>
 
-                {/* Avatar placeholder */}
+                {/* Avatar placeholder or should this be a logo? */}
                 <div style={{
                     width: '120px',
                     height: '120px',
@@ -25,7 +26,7 @@ export default function RegisterPage() {
                     margin: '0 auto 40px',
                 }} />
 
-                {/* Role */}
+                {/* ROLE */}
                 <p style={{
                     color: 'var(--color-text-muted)',
                     marginBottom: '8px',
@@ -54,121 +55,17 @@ export default function RegisterPage() {
                     ))}
                 </div>
 
-                {/* First Name */}
-                <label htmlFor="firstName" style={{
-                    color: 'var(--color-text-muted)',
-                }}>First Name</label>
-                <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '16px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
 
-                {/* Last Name */}
-                <label htmlFor="lastName" style={{
-                    color: 'var(--color-text-muted)',
-                }}>Last Name</label>
-                <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '16px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
+                {/* INPUT FIELD */} 
+                <InputField label="First Name" id="firstName" name="firstName" />
+                <InputField label="Last Name" id="lastName" name="lastName" />  
+                <InputField label="Phone Number" type="tel" id="phone" name="phone" />  
+                <InputField label="Email Address" type="email" id="email" name="email" />
+                <InputField label="Password" type="password" id="password" name="password" />
+                <InputField label="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" />
 
-                {/* Phone Number */}
-                <label htmlFor="phone" style={{
-                    color: 'var(--color-text-muted)',
-                }}>Phone Number</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '16px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
 
-                {/* Email */}
-                <label htmlFor="email" style={{
-                    color: 'var(--color-text-muted)',
-                }}>Email Address</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '16px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
-
-                {/* Password */}
-                <label htmlFor="password" style={{
-                    color: 'var(--color-text-muted)',
-                }}>Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '16px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
-
-                {/* Confirm Password */}
-                <label htmlFor="confirmPassword" style={{
-                    color: 'var(--color-text-muted)',
-                }}>Confirm Password</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    style={{
-                        width: '100%',
-                        border: '1px solid var(--color-border)',
-                        borderRadius: '12px',
-                        padding: '12px',
-                        marginBottom: '24px',
-                        marginTop: '4px',
-                        display: 'block',
-                    }}
-                />
-
-                {/* Register Button */}
+                {/* REGISTER BUTTON */}
                 <Button variant="primary" type="submit">Register</Button>
 
                 {/* Back link */}
