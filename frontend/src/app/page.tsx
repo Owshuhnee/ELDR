@@ -2,7 +2,7 @@
 
 'use client';
 
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/ui/ProductCard';
 import { useState } from 'react';
 
 export default function Home() {
@@ -25,18 +25,6 @@ export default function Home() {
   } else {
     filteredProducts = products.filter((product) => product.needsTag === selectedCategory);
   }
-
-
-  const activeStyle = {
-    backgroundColor: 'var(--color-accent)',
-    color: 'white',
-  }
-
-  const inactiveStyle = {
-    backgroundColor: 'transparent',
-  }
-
-
   
   return (
     <main
@@ -61,18 +49,26 @@ export default function Home() {
         </p>
       </header>
 
-      <div style={selectedCategory === 'all' ? activeStyle : inactiveStyle}
-
-
-
-
-      >
-        <button onClick={() => setSelectedCategory('all')}>All</button>
-        <button onClick={() => setSelectedCategory('mobility')}>Mobility</button>
-        <button onClick={() => setSelectedCategory('vision')}>Vision</button>
-        <button onClick={() => setSelectedCategory('hearing')}>Hearing</button>
-        <button onClick={() => setSelectedCategory('daily living')}>Daily Living</button>
-
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '2rem', flexWrap: 'wrap' }}>
+        {['all', 'mobility', 'vision', 'hearing', 'daily living'].map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            style={{
+              padding: '10px 20px',
+              borderRadius: '24px',
+              border: '2px solid var(--color-primary)',
+              backgroundColor: selectedCategory === cat ? 'var(--color-primary)' : 'transparent',
+              color: selectedCategory === cat ? 'white' : 'var(--color-primary)',
+              fontSize: '16px',
+              cursor: 'pointer',
+              textTransform: 'capitalize',
+              fontWeight: '600',
+            }}
+          >
+            {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        ))}
       </div>
 
       <div style={{
