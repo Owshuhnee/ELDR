@@ -1,3 +1,5 @@
+import Button from '@/components/ui/Button';
+
 type Product = {
     id: number;
     name: string;
@@ -63,19 +65,19 @@ export default function ProductCard({ product }: Props) {
                 display: 'flex',
                 gap: '12px',
             }}>
-                <button style={{
-                    backgroundColor: 'var(--color-primary)',
-                    borderRadius: '24px',
-                    color: 'white',
-                    padding: '12px',
-                    border: 'none',
-                    flexGrow: 1,
-                }}>Add to Cart</button>
+                <div style={{
+                    flexGrow: 1
+                }}>
+                    <Button variant="primary">Add to Cart</Button>
+                </div>
                 <button aria-label="Add to wishlist" style={{
                     border: '1px solid var(--color-border)',
                     borderRadius: '15px',
                     padding: '15px',
+                    minHeight: '44px',
+                    minWidth: '44px',
                 }}>♡</button>
+                
             </div>
         </div>
         
