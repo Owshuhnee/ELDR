@@ -61,3 +61,8 @@ Thumbs.db
 # ===========================
 coverage/
 .cache/
+
+# ===========================
+# Personal / study notes
+# ===========================
+study-notes.md

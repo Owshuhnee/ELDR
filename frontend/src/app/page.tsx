@@ -7,7 +7,8 @@ import { useState } from 'react';
 
 export default function Home() {
 
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('all') // sets a filter for cateory
+  const [searchText, setSearchText ] = useState('') // sets a filter for search
 
   const products = [
     { id: 1, name: "walking device", price: 30, description: "help with walking", needsTag: "mobility" },
@@ -18,14 +19,16 @@ export default function Home() {
     { id: 6, name: "magnifying glass", price: 10, description: "help with viewing", needsTag: "vision"},
   ]
 
-  let filteredProducts;
-  
-  if (selectedCategory === 'all') {
-  filteredProducts = products;
-  } else {
-    filteredProducts = products.filter((product) => product.needsTag === selectedCategory);
-  }
-  
+
+    const filteredProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory === 'all' || product.needsTag === selectedCategory;
+    // passes if 'all' is selected, or if product tag matches selected category
+    const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase())
+    // checks if product name contains the search input (case-insensitive)
+    return matchesCategory && matchesSearch;
+    // product only shows if both conditions are true
+  });
+
   return (
     <main
       style={{
@@ -48,6 +51,15 @@ export default function Home() {
           Products to support independent living
         </p>
       </header>
+
+      <div>
+        <input onChange={(e) => setSearchText(e.target.value)}
+          type="search"
+          value={searchText}
+          placeholder="Search products..."
+          />
+        {/* when something is typed, grab the event and look at the element that fired it and get its current value */}
+      </div>
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '2rem', flexWrap: 'wrap' }}>
         {['all', 'mobility', 'vision', 'hearing', 'daily living'].map((cat) => (
