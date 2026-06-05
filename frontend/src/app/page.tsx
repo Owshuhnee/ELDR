@@ -4,21 +4,12 @@
 
 import ProductCard from '@/components/ui/ProductCard';
 import { useState } from 'react';
+import { products } from '@/data/products'
 
 export default function Home() {
 
   const [selectedCategory, setSelectedCategory] = useState('all') // sets a filter for cateory
   const [searchText, setSearchText ] = useState('') // sets a filter for search
-
-  const products = [
-    { id: 1, name: "walking device", price: 30, description: "help with walking", needsTag: "mobility" },
-    { id: 2, name: "hearing aid", price: 15, description: "help with hearing", needsTag: "hearing"},
-    { id: 3, name: "bottle opener", price: 10, description: "help with convenience", needsTag: "daily living"},
-    { id: 4, name: "easy door handle", price: 20, description: "help with opening doors", needsTag: "daily living"},
-    { id: 5, name: "staircase roller", price: 20, description: "help with walking up stairs", needsTag: "mobility"},
-    { id: 6, name: "magnifying glass", price: 10, description: "help with viewing", needsTag: "vision"},
-  ]
-
 
     const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategory === 'all' || product.needsTag === selectedCategory;
