@@ -4,28 +4,22 @@
 
 import ProductCard from '@/components/ui/ProductCard';
 import { useState } from 'react';
+import { products } from '@/data/products'
 
 export default function Home() {
 
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('all') // sets a filter for cateory
+  const [searchText, setSearchText ] = useState('') // sets a filter for search
 
-  const products = [
-    { id: 1, name: "walking device", price: 30, description: "help with walking", needsTag: "mobility" },
-    { id: 2, name: "hearing aid", price: 15, description: "help with hearing", needsTag: "hearing"},
-    { id: 3, name: "bottle opener", price: 10, description: "help with convenience", needsTag: "daily living"},
-    { id: 4, name: "easy door handle", price: 20, description: "help with opening doors", needsTag: "daily living"},
-    { id: 5, name: "staircase roller", price: 20, description: "help with walking up stairs", needsTag: "mobility"},
-    { id: 6, name: "magnifying glass", price: 10, description: "help with viewing", needsTag: "vision"},
-  ]
+    const filteredProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory === 'all' || product.needsTag === selectedCategory;
+    // passes if 'all' is selected, or if product tag matches selected category
+    const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase())
+    // checks if product name contains the search input (case-insensitive)
+    return matchesCategory && matchesSearch;
+    // product only shows if both conditions are true
+  });
 
-  let filteredProducts;
-  
-  if (selectedCategory === 'all') {
-  filteredProducts = products;
-  } else {
-    filteredProducts = products.filter((product) => product.needsTag === selectedCategory);
-  }
-  
   return (
     <main
       style={{
@@ -48,6 +42,15 @@ export default function Home() {
           Products to support independent living
         </p>
       </header>
+
+      <div>
+        <input onChange={(e) => setSearchText(e.target.value)}
+          type="search"
+          value={searchText}
+          placeholder="Search products..."
+          />
+        {/* when something is typed, grab the event and look at the element that fired it and get its current value */}
+      </div>
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '2rem', flexWrap: 'wrap' }}>
         {['all', 'mobility', 'vision', 'hearing', 'daily living'].map((cat) => (
@@ -78,9 +81,13 @@ export default function Home() {
 
 
       }}>
-        {filteredProducts.map((product) => (
+        {filteredProducts.length === 0 ? (
+          <p>No results</p>
+          ) : (
+        filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
-        ))}
+        ))
+          )}
 
  
       </div>

@@ -1,4 +1,5 @@
 import Button from '@/components/ui/Button';
+import Link from 'next/link'
 
 type Product = {
     id: number;
@@ -33,7 +34,8 @@ export default function ProductCard({ product }: Props) {
                 fontWeight: '600',
                 color: 'var(--color-primary)'
             }}>
-                {product.name}
+                <Link href={`/product/${product.id}`}>{product.name}</Link>
+                
             </p>
             <p style={{
                 fontSize: '24px',
