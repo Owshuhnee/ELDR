@@ -7,7 +7,7 @@ main
 └── dev
     ├── feature/feature-name      ← new features
     ├── fix/bug-description       ← bug fixes
-    └── chore/task-description    ← non-code tasks (config, docs)
+    └── tasks/task-description    ← non-code tasks (config, docs)
 ```
 
 ### `main` — Production-Ready Code

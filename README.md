@@ -17,12 +17,23 @@ ELDR solves this by providing:
 
 ---
 
+## 📋 Key Features
+
+- **Verified Product Badge** – All products meet elderly-friendly standards before listing
+- **Search by Need** – Filter by mobility, vision, hearing, and daily living
+- **Accessibility Mode** – High contrast, large text, and simplified navigation
+- **Family Account Access** – Caregivers can assist elderly users
+- **Elderly User Reviews** – Feedback from users with similar needs
+- **Wishlist & Recurring Purchases** – Save and reorder frequently used products
+
+---
+
 ## 👥 Team
 
 | Name | Primary Role | Secondary Role |
 |---|---|---|
-| Ross Crawford | Scrum Master | Frontend/Backend Developer |
-| Jove Tondo | Product Owner | Frontend/Backend Developer |
+| Ross Crawford | Scrum Master | Full-Stack Developer |
+| Jove Tondo | Product Owner | Full-stack Developer |
 
 ---
 
@@ -42,19 +53,36 @@ ELDR solves this by providing:
 
 ## 🗂️ Project Structure
 
-```
-eldr/
-├── frontend/          # Next.js React application
-│   ├── components/    # Reusable UI components
-│   ├── pages/         # Next.js page routes
-│   └── styles/        # Global styles and design tokens
-├── backend/           # Python Flask application
-│   ├── routes/        # Flask API route handlers
-│   ├── models/        # Database models
-│   └── middleware/    # Auth and validation middleware
-├── database/          # PostgreSQL schema and migrations
-└── docs/              # Project documentation
-```
+​```
+ELDR/
+├── frontend/                  # Next.js React application
+│   ├── public/                # Static assets
+│   └── src/
+│       ├── app/               # Next.js App Router pages
+│       │   ├── dashboard/     # Dashboard page
+│       │   ├── login/         # Login page
+│       │   ├── register/      # Register page
+│       │   └── product/       # Product detail page
+│       ├── components/ui/     # Reusable UI components
+│       │   ├── AuthCard.tsx
+│       │   ├── Button.tsx
+│       │   ├── InputField.tsx
+│       │   └── ProductCard.tsx
+│       └── data/              # Static data
+│           └── products.ts
+├── backend/                   # Python Flask application
+│   ├── app/                   # Flask app package
+│   │   ├── routes/            # API route handlers
+│   │   │   └── auth.py        # Auth routes
+│   │   ├── db.py              # Database connection
+│   │   └── models.py          # Database models
+│   ├── migrations/            # Database migrations
+│   ├── tests/                 # Backend tests
+│   └── app.py                 # Flask entry point
+├── docs/                      # Project documentation
+│   └── schema.md              # Database schema
+└── .github/                   # GitHub templates
+​```
 
 ---
 
@@ -68,38 +96,27 @@ eldr/
 
 ### Installation
 
-```bash
+​```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/eldr.git
-cd eldr
-
-# Install dependencies
-npm install
+git clone https://github.com/Owshuhnee/ELDR.git
+cd ELDR
 
 # Set up environment variables
 cp .env.example .env
 # Edit .env with your database credentials
 
-# Run database migrations
-npm run db:migrate
-
-# Start development server
+# Install and run frontend
+cd frontend
+npm install
 npm run dev
-```
+
+# In a separate terminal — run backend
+cd backend
+venv\Scripts\activate
+python app.py
+​```
 
 ---
-
-## 📋 Key Features
-
-- **Verified Product Badge** – All products meet elderly-friendly standards before listing
-- **Search by Need** – Filter by mobility, vision, hearing, and daily living
-- **Accessibility Mode** – High contrast, large text, and simplified navigation
-- **Family Account Access** – Caregivers can assist elderly users
-- **Elderly User Reviews** – Feedback from users with similar needs
-- **Wishlist & Recurring Purchases** – Save and reorder frequently used products
-
----
-
 
 ## 📚 Course Information
 
