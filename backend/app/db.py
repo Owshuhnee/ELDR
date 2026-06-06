@@ -1,16 +1,22 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.pool import QueuePool
 import os
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL)        # creates the connection to Neon PostgreSQL database using the URL inside .env file
+engine = create_engine(
+    DATABASE_URL,
+    poolclass=QueuePool,
+    pool_pre_ping=True,
+    pool_recycle=300,
+)
 
-SessionLocal = sessionmaker(bind=engine)    # creates database sessions
+SessionLocal = sessionmaker(bind=engine)
 
-Base = declarative_base()                   # base class that models will inherit from
+Base = declarative_base()
 
-def get_db():                               # function that opens a database session
+def get_db():
     db = SessionLocal()
     try:
         yield db
