@@ -1,7 +1,6 @@
-# This is the routing file for all Authentication & Onboarding features (login, register, forgot password, onboarding)
+# This is the routing file for all Authentication & Onboarding features (login/logout, register, forgot password, onboarding questions)
 
-
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
 from app.models import User
 from app import bcrypt
@@ -84,6 +83,11 @@ def login():
         if not bcrypt.check_password_hash(user.password_hash, password):
             return jsonify({'error': 'Invalid email or password'}), 401
 
+        # Store user in session
+        session['user_id'] = user.id
+        session['user_email'] = user.email
+        session['user_role'] = user.role
+
         return jsonify({
             'message': 'Login successful',
             'user': {
@@ -101,3 +105,9 @@ def login():
 
     finally:
         db.close()
+
+
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    session.clear()  # clears all session data
+    return jsonify({'message': 'Logged out successfully'}), 200

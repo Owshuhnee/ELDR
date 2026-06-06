@@ -10,9 +10,14 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])
+CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 bcrypt = Bcrypt(app)
+
+# Session config
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 @app.route("/api/health")
 def health():
