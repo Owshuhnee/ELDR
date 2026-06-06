@@ -81,9 +81,13 @@ export default function Home() {
 
 
       }}>
-        {filteredProducts.map((product) => (
+        {filteredProducts.length === 0 ? (
+          <p>No results</p>
+          ) : (
+        filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
-        ))}
+        ))
+          )}
 
  
       </div>
