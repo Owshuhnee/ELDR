@@ -1,4 +1,4 @@
-# This is the routing file for all Authentication & Onboarding features (login/logout, register, forgot password, onboarding questions)
+# This is the routing file for features: login, register, forgot password
 
 from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
@@ -7,6 +7,7 @@ from app import bcrypt
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
+# REGISTER
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -49,8 +50,18 @@ def register():
 
         db.add(new_user)
         db.commit()
+        db.refresh(new_user)
 
-        return jsonify({'message': 'Registration successful'}), 201
+        return jsonify({
+            'message': 'Registration successful',
+            'user': {
+                'id': new_user.id,
+                'email': new_user.email,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'role': new_user.role
+            }
+        }), 201
 
     except Exception as e:
         db.rollback()
@@ -59,7 +70,7 @@ def register():
     finally:
         db.close()
 
-
+# LOGIN
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -107,7 +118,26 @@ def login():
         db.close()
 
 
-@auth_bp.route('/logout', methods=['POST'])
-def logout():
-    session.clear()  # clears all session data
-    return jsonify({'message': 'Logged out successfully'}), 200
+# FORGOT PASSWORD
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email', '').strip().lower()
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+
+        return jsonify({
+            'message': 'If that email is registered, a reset link has been sent.'
+        }), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+    finally:
+        db.close()

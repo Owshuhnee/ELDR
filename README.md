@@ -53,36 +53,38 @@ ELDR solves this by providing:
 
 ## 🗂️ Project Structure
 
-​```
-ELDR/
-├── frontend/                  # Next.js React application
-│   ├── public/                # Static assets
+```
+​ELDR/
+├── frontend/                    # Next.js React application
+│   ├── public/                  # Static assets
 │   └── src/
-│       ├── app/               # Next.js App Router pages
-│       │   ├── dashboard/     # Dashboard page
-│       │   ├── login/         # Login page
-│       │   ├── register/      # Register page
-│       │   └── product/       # Product detail page
-│       ├── components/ui/     # Reusable UI components
+│       ├── app/                 # Next.js App Router pages
+│       │   ├── dashboard/       # Dashboard page
+│       │   ├── login/           # Login page
+│       │   ├── register/        # Register page
+│       │   ├── forgot-password/ # Forgot password page
+│       │   └── product/         # Product detail page
+│       ├── components/ui/       # Reusable UI components
 │       │   ├── AuthCard.tsx
 │       │   ├── Button.tsx
 │       │   ├── InputField.tsx
 │       │   └── ProductCard.tsx
-│       └── data/              # Static data
+│       └── data/                # Static data
 │           └── products.ts
-├── backend/                   # Python Flask application
-│   ├── app/                   # Flask app package
-│   │   ├── routes/            # API route handlers
-│   │   │   └── auth.py        # Auth routes
-│   │   ├── db.py              # Database connection
-│   │   └── models.py          # Database models
-│   ├── migrations/            # Database migrations
-│   ├── tests/                 # Backend tests
-│   └── app.py                 # Flask entry point
-├── docs/                      # Project documentation
-│   └── schema.md              # Database schema
-└── .github/                   # GitHub templates
-​```
+├── backend/                     # Python Flask application
+│   ├── app/                     # Flask app package
+│   │   ├── routes/              # API route handlers
+│   │   │   └── auth.py          # Auth routes
+│   │   ├── db.py                # Database connection
+│   │   └── models.py            # Database models
+│   ├── migrations/              # Database migrations
+│   ├── tests/                   # Backend tests
+│   └── app.py                   # Flask entry point
+├── docs/                        # Project documentation
+│   └── schema.md                # Database schema
+└── .github/                     # GitHub templates
+
+```
 
 ---
 
@@ -96,7 +98,7 @@ ELDR/
 
 ### Installation
 
-​```bash
+```
 # Clone the repository
 git clone https://github.com/Owshuhnee/ELDR.git
 cd ELDR
@@ -114,7 +116,7 @@ npm run dev
 cd backend
 venv\Scripts\activate
 python app.py
-​```
+```
 
 ---
 

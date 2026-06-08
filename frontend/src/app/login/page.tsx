@@ -88,7 +88,7 @@ export default function LoginPage() {
                 justifyContent: 'space-between',
                 marginTop: '24px',
             }}>
-                <a href="#">Forgot password?</a>
+                <a href="/forgot-password">Forgot password?</a>
                 <a href="/register">Create Account</a>
             </div>
         </AuthCard>
