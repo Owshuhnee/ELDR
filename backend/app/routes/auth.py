@@ -1,13 +1,15 @@
-# AUTH and ONBOARDING Routes (login, register, forgot password, onboarding)
+# AUTH Routes (login, register, forgot password)
 
+# IMPORTS
 from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
 from app.models import User
 from app import bcrypt
 
+# DEFINE BLUEPRINT
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
-# REGISTER
+# ROUTES
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()

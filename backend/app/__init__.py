@@ -23,6 +23,13 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 def health():
     return {"status": "ok", "message": "Flask is running"}
 
+@app.route("/api/debug/routes")
+def list_routes():
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append(str(rule))
+    return {"routes": routes}
+
 from app.routes.auth import auth_bp
 app.register_blueprint(auth_bp)
 

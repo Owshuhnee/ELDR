@@ -1,10 +1,15 @@
+# ONBOARDING ROUTES 
+
+# IMPORTS
 from flask import Blueprint, request, jsonify
 from app.db import SessionLocal
 from app.models import User
 from app import bcrypt
 
+# DEFINE BLUEPRINT
 onboarding_bp = Blueprint('onboarding', __name__, url_prefix='/api/onboarding')
 
+# ROUTES
 @onboarding_bp.route('/submit', methods=['POST'])
 def submit_onboarding():
     data = request.get_json()

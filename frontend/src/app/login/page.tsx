@@ -34,11 +34,10 @@ export default function LoginPage() {
 
             const data = await response.json()
 
-            if (response.ok) {
-                window.location.href = '/dashboard'
-            } else {
-                setError(data.error)
-            }
+       if (response.ok) {
+            localStorage.setItem('user_id', data.user.id)
+            window.location.href = '/dashboard'
+        }
 
         } catch (err) {
             setError('Could not connect to server. Please try again.')
