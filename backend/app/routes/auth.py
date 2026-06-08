@@ -1,13 +1,13 @@
 # AUTH and ONBOARDING Routes (login, register, forgot password, onboarding)
 
-
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
 from app.models import User
 from app import bcrypt
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
+# REGISTER
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -50,8 +50,18 @@ def register():
 
         db.add(new_user)
         db.commit()
+        db.refresh(new_user)
 
-        return jsonify({'message': 'Registration successful'}), 201
+        return jsonify({
+            'message': 'Registration successful',
+            'user': {
+                'id': new_user.id,
+                'email': new_user.email,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'role': new_user.role
+            }
+        }), 201
 
     except Exception as e:
         db.rollback()
@@ -60,7 +70,7 @@ def register():
     finally:
         db.close()
 
-
+# LOGIN
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -84,6 +94,11 @@ def login():
         if not bcrypt.check_password_hash(user.password_hash, password):
             return jsonify({'error': 'Invalid email or password'}), 401
 
+        # Store user in session
+        session['user_id'] = user.id
+        session['user_email'] = user.email
+        session['user_role'] = user.role
+
         return jsonify({
             'message': 'Login successful',
             'user': {
@@ -93,6 +108,31 @@ def login():
                 'last_name': user.last_name,
                 'role': user.role
             }
+        }), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+    finally:
+        db.close()
+
+
+# FORGOT PASSWORD
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email', '').strip().lower()
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+
+        return jsonify({
+            'message': 'If that email is registered, a reset link has been sent.'
         }), 200
 
     except Exception as e:
