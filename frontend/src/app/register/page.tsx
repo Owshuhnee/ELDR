@@ -2,9 +2,11 @@
 
 // REGISTER PAGE
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
+
 
 export default function RegisterPage() {
 
@@ -21,6 +23,7 @@ export default function RegisterPage() {
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -42,7 +45,8 @@ export default function RegisterPage() {
             const data = await response.json()
 
             if (response.ok) {
-                setMessage(data.message)
+                localStorage.setItem('user', JSON.stringify(data.user))
+                router.push('/onboarding')
             } else {
                 setError(data.error)
             }

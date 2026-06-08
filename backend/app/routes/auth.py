@@ -1,4 +1,4 @@
-# This is the routing file for all Authentication & Onboarding features (login, register, forgot password, onboarding)
+# This is the routing file for features: login, register, forgot password
 
 
 from flask import Blueprint, request, jsonify
@@ -8,6 +8,7 @@ from app import bcrypt
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
+# REGISTER
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -50,8 +51,18 @@ def register():
 
         db.add(new_user)
         db.commit()
+        db.refresh(new_user)
 
-        return jsonify({'message': 'Registration successful'}), 201
+        return jsonify({
+            'message': 'Registration successful',
+            'user': {
+                'id': new_user.id,
+                'email': new_user.email,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'role': new_user.role
+            }
+        }), 201
 
     except Exception as e:
         db.rollback()
@@ -60,7 +71,7 @@ def register():
     finally:
         db.close()
 
-
+# LOGIN
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
