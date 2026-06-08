@@ -79,10 +79,7 @@ export default function LoginPage() {
                 <Button variant="primary" type="submit">
                     {loading ? 'Logging in...' : 'Login'}
                 </Button>
-                <div style={{ marginTop: '12px' }}>
-                    <Button variant="secondary">Login as Guest</Button>
-                </div>
-
+              
             </form>
 
             {/* Bottom links */}

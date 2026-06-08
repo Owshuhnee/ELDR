@@ -1,7 +1,6 @@
 # This is the routing file for features: login, register, forgot password
 
-
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
 from app.models import User
 from app import bcrypt
@@ -94,6 +93,11 @@ def login():
         # Check password
         if not bcrypt.check_password_hash(user.password_hash, password):
             return jsonify({'error': 'Invalid email or password'}), 401
+
+        # Store user in session
+        session['user_id'] = user.id
+        session['user_email'] = user.email
+        session['user_role'] = user.role
 
         return jsonify({
             'message': 'Login successful',
