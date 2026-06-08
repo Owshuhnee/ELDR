@@ -101,3 +101,28 @@ def login():
 
     finally:
         db.close()
+
+
+# FORGOT PASSWORD
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email', '').strip().lower()
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+
+        return jsonify({
+            'message': 'If that email is registered, a reset link has been sent.'
+        }), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+    finally:
+        db.close()

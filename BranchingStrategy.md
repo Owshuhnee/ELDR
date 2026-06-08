@@ -7,7 +7,7 @@ main
 └── dev
     ├── feature/feature-name      ← new features
     ├── fix/bug-description       ← bug fixes
-    └── chore/task-description    ← non-code tasks (config, docs)
+    └── task/task-description     ← non-code tasks (config, docs)
 ```
 
 ### `main` — Production-Ready Code
@@ -81,7 +81,7 @@ git merge dev
 Follow this pattern for every commit:
 
 ```
-type: short description (max 72 characters)
+type: short description (max 72 characters) + JIRA EP-#
 ```
 
 | Type | When to Use |
@@ -92,15 +92,15 @@ type: short description (max 72 characters)
 | `refactor` | Code restructure, no behaviour change |
 | `test` | Adding or updating tests |
 | `docs` | Documentation only |
-| `chore` | Config files, dependencies, tooling |
+| `task` | Config files, dependencies, tooling |
 
 **Examples:**
 ```
-feat: add verified badge to product card
-fix: search bar not visible on mobile
-style: increase button size for accessibility
-docs: update README with setup instructions
-chore: add .env.example file
+feat: add verified badge to product card EP-11
+fix: search bar not visible on mobile EP-22
+style: increase button size for accessibility EP-33
+docs: update README with setup instructions EP-44
+task: add .env.example file EP-55
 ```
 
 ---
