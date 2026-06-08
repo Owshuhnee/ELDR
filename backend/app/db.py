@@ -17,8 +17,8 @@ SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
 def get_db():
-    db = SessionLocal()
+    db = SessionLocal()     # open a session
     try:
-        yield db
+        yield db            # hand it to whoever called get_db()
     finally:
-        db.close()
+        db.close()          # always close it when done

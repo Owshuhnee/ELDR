@@ -4,7 +4,7 @@
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 ELDR addresses a clear gap in digital commerce for older adults. Mainstream platforms like Trade Me are not designed with elderly users in mind — cluttered interfaces, no product verification, and overwhelming search results create barriers to independent online shopping.
 
@@ -17,7 +17,7 @@ ELDR solves this by providing:
 
 ---
 
-## 📋 Key Features
+## Key Features
 
 - **Verified Product Badge** – All products meet elderly-friendly standards before listing
 - **Search by Need** – Filter by mobility, vision, hearing, and daily living
@@ -28,7 +28,7 @@ ELDR solves this by providing:
 
 ---
 
-## 👥 Team
+## Team
 
 | Name | Primary Role | Secondary Role |
 |---|---|---|
@@ -37,13 +37,13 @@ ELDR solves this by providing:
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Layer | Technology |
 |---|---|
 | Frontend | React with Next.js |
 | Backend | Python Flask |
-| Database | PostgreSQL |
+| Database | PostgreSQL with Neon DB |
 | Real-time | Flask-SocketIO (Pending) |
 | Design | Figma |
 | Project Management | JIRA |
@@ -51,9 +51,9 @@ ELDR solves this by providing:
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
-​```
+```
 ELDR/
 ├── frontend/                  # Next.js React application
 │   ├── public/                # Static assets
@@ -82,21 +82,21 @@ ELDR/
 ├── docs/                      # Project documentation
 │   └── schema.md              # Database schema
 └── .github/                   # GitHub templates
-​```
+```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js v18+
 - Python 3.11+
-- PostgreSQL
+- PostgreSQL with Neon DB
 - pip
 
 ### Installation
 
-​```bash
+```
 # Clone the repository
 git clone https://github.com/Owshuhnee/ELDR.git
 cd ELDR
@@ -114,22 +114,28 @@ npm run dev
 cd backend
 venv\Scripts\activate
 python app.py
-​```
+```
 
 ---
 
-## 📚 Course Information
+## Documentation
 
-**Programme:** Diploma in Software Development
-
-**Course:** SD202 Cross-Platform Development - Project Proposal
-- **Submitted:** April 2026
-
-**Course:** SD203 Investigative Studio I - Project Implementation
-- **Submitted:** June 2026 (In progress)
+- [Branching Strategy](docs/BranchingStrategy.md)
+- [Pull Request Guidelines](docs/PullRequestGuide.md)
+- [Database Schema](docs/schema.md)
 
 ---
 
-## 📄 License
+## Course Information
+
+**Programme:** Diploma in Software Development  
+**Institution:** Yoobee Colleges  
+
+**SD202** Cross-Platform Development — Project Proposal ✅  Complete
+**SD203** Investigative Studio I — Project Implementation 🟡 In Progress
+
+---
+
+## License
 
 This project is for educational purposes as part of the Diploma in Software Development at Yoobee Colleges.
