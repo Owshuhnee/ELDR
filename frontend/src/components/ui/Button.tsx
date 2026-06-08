@@ -1,39 +1,64 @@
-// LOGIN PAGE BUTTONS (Can be resuable?)
+// Added a "danger" style variant
+
 
 type Props = {
-    variant: 'primary' | 'secondary';
-    children: string;
-    type?: 'submit' | 'button';
-    onClick?: () => void;
+    variant: 'primary' | 'secondary' | 'danger'
+    children: string
+    type?: 'submit' | 'button'
+    onClick?: () => void
+    disabled?: boolean
+    fullWidth?: boolean
 }
 
-export default function Button({ variant, children, type = 'button', onClick }: Props) {
+export default function Button({
+    variant,
+    children,
+    type = 'button',
+    onClick,
+    disabled = false,
+    fullWidth = true,
+}: Props) {
 
-    const baseStyle = {
-        width: '100%',
+    const base: React.CSSProperties = {
+        width: fullWidth ? '100%' : 'auto',
         borderRadius: '24px',
-        padding: '16px',
+        padding: '14px 24px',
         fontSize: '18px',
-        cursor: 'pointer',
+        fontWeight: 600,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1,
+        border: 'none',
+        transition: 'opacity 0.2s',
+        minHeight: '44px',
     }
 
-    const styles = {
+    const variants: Record<string, React.CSSProperties> = {
         primary: {
-            ...baseStyle,
+            ...base,
             backgroundColor: 'var(--color-primary)',
             color: 'white',
-            border: 'none',
         },
         secondary: {
-            ...baseStyle,
+            ...base,
             backgroundColor: 'transparent',
             color: 'var(--color-primary)',
             border: '1px solid var(--color-border)',
+        },
+        danger: {
+            ...base,
+            backgroundColor: 'transparent',
+            color: '#721c24',
+            border: '1px solid #f5c6cb',
         }
     }
 
     return (
-        <button type={type} onClick={onClick} style={styles[variant]}>
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            style={variants[variant]}
+        >
             {children}
         </button>
     )

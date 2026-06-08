@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import Button from '@/components/ui/Button'
 
 const placeholderItems = [
     { id: 1, product_id: 1, name: 'Ergonomic Grip Mug', price: 34.99, quantity: 1 },
@@ -88,20 +89,10 @@ export default function CartPage() {
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </p>
 
-                                <button
-                                    onClick={() => handleRemove(item.id)}
-                                    style={{
-                                        padding: '8px 16px',
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--color-border)',
-                                        backgroundColor: 'transparent',
-                                        color: 'var(--color-text-muted)',
-                                        cursor: 'pointer',
-                                        fontSize: '14px',
-                                    }}
-                                >
+                               <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
                                     Remove
-                                </button>
+                                </Button>
+                                
                             </div>
                         </div>
                     ))}
