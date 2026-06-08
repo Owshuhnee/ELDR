@@ -1,4 +1,4 @@
-# This is the routing file for all Authentication & Onboarding features (login, register, forgot password, onboarding)
+# AUTH and ONBOARDING Routes (login, register, forgot password, onboarding)
 
 
 from flask import Blueprint, request, jsonify
