@@ -60,6 +60,7 @@ export default function RegisterPage() {
 
     return (
         <AuthCard>
+            
             {/* Avatar or Profile picture placeholder */}
             <div style={{
                 width: '120px',
