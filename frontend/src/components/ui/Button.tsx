@@ -1,9 +1,9 @@
 // Added a "danger" style variant
-
+import React from 'react'
 
 type Props = {
     variant: 'primary' | 'secondary' | 'danger'
-    children: string
+    children: React.ReactNode
     type?: 'submit' | 'button'
     onClick?: () => void
     disabled?: boolean
