@@ -7,6 +7,8 @@ import Image from 'next/image'
 export default function Navbar() {
     const pathname = usePathname()
 
+    if (pathname === '/login' || pathname === '/register') return null
+
     return (
        <div>
             {/* desktop navbar */}
@@ -28,15 +30,6 @@ export default function Navbar() {
                         >
 
                         Home
-                        </Link>
-
-                        <Link
-                            href="/browse"
-                            style={{
-                                color: pathname === "/browse" ? 'var(--color-nav-active)' : 'var(--color-nav-text)'
-                            }}               
-                        >
-                            Browse
                         </Link>
                         <Link
                             href="/cart"
@@ -67,14 +60,6 @@ export default function Navbar() {
                     }}
                 >
                 Home
-                </Link>
-                <Link
-                    href="/browse"
-                    style={{
-                        color: pathname === "/browse" ? 'var(--color-nav-active)' : 'var(--color-nav-text)'
-                    }}               
-                >
-                    Browse
                 </Link>
                 <Link
                     href="/cart"
