@@ -1,0 +1,69 @@
+# ===========================
+# Environment / secrets
+# ===========================
+.env
+.env.local
+.env.*.local
+*.env
+
+# ===========================
+# Python / Flask (backend/)
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+instance/
+.flaskenv
+
+# ===========================
+# Node / React (frontend/)
+# ===========================
+node_modules/
+dist/
+dist-ssr/
+build/
+.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===========================
+# Editors / OS
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Logs / databases (local)
+# ===========================
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# ===========================
+# Misc
+# ===========================
+coverage/
+.cache/
+
+# ===========================
+# Personal / study notes
+# ===========================
+study-notes.md
+CLAUDE.md

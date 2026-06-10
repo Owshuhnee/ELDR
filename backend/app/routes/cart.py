@@ -1,0 +1,149 @@
+# CART Routes (add, view, remove, checkout)
+
+# IMPORTS
+from flask import Blueprint, request, jsonify
+from app.db import get_db
+from app.models import CartItem, Order, OrderItem, Product
+
+# DEFINE BLUEPRINT
+cart_bp = Blueprint('cart', __name__)
+
+
+# ─── EP-45: Add to cart ───────────────────────────────────────────
+
+@cart_bp.route('/api/cart/add', methods=['POST'])
+def add_to_cart():
+    data       = request.get_json()
+    user_id    = data.get('user_id')
+    product_id = data.get('product_id')
+    quantity   = data.get('quantity', 1)
+
+    if not user_id or not product_id:
+        return jsonify({'error': 'user_id and product_id are required'}), 400
+
+    db = next(get_db())
+    try:
+        existing = db.query(CartItem).filter_by(
+            user_id=user_id,
+            product_id=product_id
+        ).first()
+
+        if existing:
+            existing.quantity += quantity
+        else:
+            new_item = CartItem(
+                user_id=user_id,
+                product_id=product_id,
+                quantity=quantity
+            )
+            db.add(new_item)
+
+        db.commit()
+        return jsonify({'message': 'Cart updated successfully'}), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+# ─── EP-46: View cart ─────────────────────────────────────────────
+
+@cart_bp.route('/api/cart/<int:user_id>', methods=['GET'])
+def get_cart(user_id):
+    db = next(get_db())
+    try:
+        items = db.query(CartItem).filter_by(user_id=user_id).all()
+
+        result = []
+        for item in items:
+            result.append({
+                'id':         item.id,
+                'product_id': item.product_id,
+                'quantity':   item.quantity
+            })
+
+        return jsonify({'cart': result}), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+# ─── EP-45: Remove from cart ──────────────────────────────────────
+
+@cart_bp.route('/api/cart/remove/<int:item_id>', methods=['DELETE'])
+def remove_from_cart(item_id):
+    db = next(get_db())
+    try:
+        item = db.query(CartItem).filter_by(id=item_id).first()
+
+        if not item:
+            return jsonify({'error': 'Cart item not found'}), 404
+
+        db.delete(item)
+        db.commit()
+        return jsonify({'message': 'Item removed from cart'}), 200
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+# ─── EP-47: Checkout ──────────────────────────────────────────────
+
+@cart_bp.route('/api/cart/checkout', methods=['POST'])
+def checkout():
+    data    = request.get_json()
+    user_id = data.get('user_id')
+
+    if not user_id:
+        return jsonify({'error': 'user_id is required'}), 400
+
+    db = next(get_db())
+    try:
+        cart_items = db.query(CartItem).filter_by(user_id=user_id).all()
+
+        if not cart_items:
+            return jsonify({'error': 'Cart is empty'}), 400
+
+        product_ids = [item.product_id for item in cart_items]
+        products    = db.query(Product).filter(Product.id.in_(product_ids)).all()
+        product_map = {product.id: product for product in products}
+
+        total = 0
+        for item in cart_items:
+            product = product_map[item.product_id]
+            total  += product.price * item.quantity
+
+        new_order = Order(
+            buyer_id     = user_id,
+            total_amount = total,
+            status       = 'pending'
+        )
+        db.add(new_order)
+        db.flush()
+
+        for item in cart_items:
+            product    = product_map[item.product_id]
+            order_item = OrderItem(
+                order_id          = new_order.id,
+                product_id        = item.product_id,
+                quantity          = item.quantity,
+                price_at_purchase = product.price
+            )
+            db.add(order_item)
+
+        for item in cart_items:
+            db.delete(item)
+
+        db.commit()
+
+        return jsonify({
+            'message':  'Order placed successfully',
+            'order_id': new_order.id,
+            'total':    float(total)
+        }), 201
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500

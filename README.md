@@ -4,7 +4,7 @@
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 ELDR addresses a clear gap in digital commerce for older adults. Mainstream platforms like Trade Me are not designed with elderly users in mind — cluttered interfaces, no product verification, and overwhelming search results create barriers to independent online shopping.
 
@@ -17,79 +17,7 @@ ELDR solves this by providing:
 
 ---
 
-## 👥 Team
-
-| Name | Primary Role | Secondary Role |
-|---|---|---|
-| Ross Crawford | Scrum Master | Frontend/Backend Developer |
-| Jove Tondo | Product Owner | Frontend/Backend Developer |
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React with Next.js |
-| Backend | Python Flask |
-| Database | PostgreSQL |
-| Real-time | Flask-SocketIO (Pending) |
-| Design | Figma |
-| Project Management | JIRA |
-| Version Control | GitHub |
-
----
-
-## 🗂️ Project Structure
-
-```
-eldr/
-├── frontend/          # Next.js React application
-│   ├── components/    # Reusable UI components
-│   ├── pages/         # Next.js page routes
-│   └── styles/        # Global styles and design tokens
-├── backend/           # Python Flask application
-│   ├── routes/        # Flask API route handlers
-│   ├── models/        # Database models
-│   └── middleware/    # Auth and validation middleware
-├── database/          # PostgreSQL schema and migrations
-└── docs/              # Project documentation
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js v18+
-- Python 3.11+
-- PostgreSQL
-- pip
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/eldr.git
-cd eldr
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your database credentials
-
-# Run database migrations
-npm run db:migrate
-
-# Start development server
-npm run dev
-```
-
----
-
-## 📋 Key Features
+## Key Features
 
 - **Verified Product Badge** – All products meet elderly-friendly standards before listing
 - **Search by Need** – Filter by mobility, vision, hearing, and daily living
@@ -100,20 +28,116 @@ npm run dev
 
 ---
 
+## Team
 
-## 📚 Course Information
-
-- **Course:** SD202 Cross-Platform Development - Project Proposal
-- **Programme:** Diploma in Software Development
-- **Submitted:** April 2026
-
-- **Course:** SD203 Investigative Studio I - Project Implementation
-- **Programme:** Diploma in Software Development
-- **Submitted:** June 2026 (In progress)
-
+| Name | Primary Role | Secondary Role |
+|---|---|---|
+| Ross Crawford | Scrum Master | Full-Stack Developer |
+| Jove Tondo | Product Owner | Full-stack Developer |
 
 ---
 
-## 📄 License
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React with Next.js |
+| Backend | Python Flask |
+| Database | PostgreSQL with Neon DB |
+| Real-time | Flask-SocketIO (Pending) |
+| Design | Figma |
+| Project Management | JIRA |
+| Version Control | GitHub |
+
+---
+
+## Project Structure
+
+```
+ELDR/
+├── frontend/                  # Next.js React application
+│   ├── public/                # Static assets
+│   └── src/
+│       ├── app/                 # Next.js App Router pages
+│       │   ├── dashboard/       # Dashboard page
+│       │   ├── login/           # Login page
+│       │   ├── register/        # Register page
+│       │   ├── forgot-password/ # Forgot password page
+│       │   └── product/         # Product detail page
+│       ├── components/ui/       # Reusable UI components
+│       │   ├── AuthCard.tsx
+│       │   ├── Button.tsx
+│       │   ├── InputField.tsx
+│       │   └── ProductCard.tsx
+│       └── data/                # Static data
+│           └── products.ts
+├── backend/                     # Python Flask application
+│   ├── app/                     # Flask app package
+│   │   ├── routes/              # API route handlers
+│   │   │   └── auth.py          # Auth routes
+│   │   ├── db.py                # Database connection
+│   │   └── models.py            # Database models
+│   ├── migrations/              # Database migrations
+│   ├── tests/                   # Backend tests
+│   └── app.py                   # Flask entry point
+├── docs/                        # Project documentation
+│   └── schema.md                # Database schema
+└── .github/                     # GitHub templates
+
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js v18+
+- Python 3.11+
+- PostgreSQL with Neon DB
+- pip
+
+### Installation
+
+```
+# Clone the repository
+git clone https://github.com/Owshuhnee/ELDR.git
+cd ELDR
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Install and run frontend
+cd frontend
+npm install
+npm run dev
+
+# In a separate terminal — run backend
+cd backend
+venv\Scripts\activate
+python app.py
+```
+
+---
+
+## Documentation
+
+- [Branching Strategy](docs/BranchingStrategy.md)
+- [Pull Request Guidelines](docs/PullRequestGuide.md)
+- [Database Schema](docs/schema.md)
+
+---
+
+## Course Information
+
+**Programme:** Diploma in Software Development  
+**Institution:** Yoobee Colleges  
+
+**SD202** Cross-Platform Development — Project Proposal ✅  Complete
+**SD203** Investigative Studio I — Project Implementation 🟡 In Progress
+
+---
+
+## License
 
 This project is for educational purposes as part of the Diploma in Software Development at Yoobee Colleges.
