@@ -1,5 +1,6 @@
 import Button from '@/components/ui/Button';
 import Link from 'next/link'
+import VerifiedBadge from '@/components/ui/VerifiedBadge';
 
 type Product = {
     id: number;
@@ -7,6 +8,7 @@ type Product = {
     price: number;
     description: string;
     needsTag: string;
+    verified: boolean;
 }
 
 type Props = {
@@ -25,6 +27,7 @@ export default function ProductCard({ product }: Props) {
                     display: 'block'
 
         }}/>
+        
         <div style={{
             padding: '30px',
             position: 'relative'
@@ -37,6 +40,9 @@ export default function ProductCard({ product }: Props) {
                 <Link href={`/product/${product.id}`}>{product.name}</Link>
                 
             </p>
+            
+            {product.verified && <VerifiedBadge />}
+
             <p style={{
                 fontSize: '24px',
                 fontWeight: 700,
