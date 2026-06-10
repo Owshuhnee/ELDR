@@ -34,11 +34,10 @@ export default function LoginPage() {
 
             const data = await response.json()
 
-            if (response.ok) {
-                window.location.href = '/dashboard'
-            } else {
-                setError(data.error)
-            }
+       if (response.ok) {
+            localStorage.setItem('user_id', data.user.id)
+            window.location.href = '/'
+        }
 
         } catch (err) {
             setError('Could not connect to server. Please try again.')
@@ -49,12 +48,15 @@ export default function LoginPage() {
 
     return (
         <AuthCard>
-            {/* ELDER LOGO placeholder */}
-            <div style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-border)',
+            {/* LOGO */}
+           <img
+            src="/logo.png"
+            alt="ELDR Logo"
+            style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+                display: 'block',
                 margin: '0 auto 40px',
             }} />
 

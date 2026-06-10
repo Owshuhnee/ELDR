@@ -45,14 +45,15 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--color-background)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '2rem',
-    }}>
+      
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--color-background)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '2rem',
+      }}>
       <div style={{
         backgroundColor: 'var(--color-surface)',
         borderRadius: '12px',
