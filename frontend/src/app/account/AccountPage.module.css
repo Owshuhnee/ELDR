@@ -1,0 +1,115 @@
+/* ── Layout ── */
+.page {
+  min-height: 100vh;
+  background-color: #F5F5F0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 1.25rem;
+}
+
+/* ── Page heading ── */
+.pageTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 1.25rem 0;
+}
+
+/* ── Avatar ── */
+.avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: #D1D5DB;
+  margin: 0 auto 1.5rem auto;
+}
+
+/* ── Helper card ── */
+.helperCard {
+  background-color: #D9F0E8;
+  border: 1px solid #B0D8C8;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.helperText {
+  font-size: 0.875rem;
+  color: #1A4A36;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Menu buttons ── */
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.menuButton {
+  display: block;
+  width: 100%;
+  text-align: center;
+  border: 2px solid #111827;
+  border-radius: 9999px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+  background-color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.menuButton:hover {
+  background-color: #F9FAFB;
+}
+
+/* ── Logout button ── */
+.logoutButton {
+  width: 100%;
+  background-color: #4B5563;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.logoutButton:hover {
+  background-color: #374151;
+}
+
+/* ── Identity block (name + role badge) ── */
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.userName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.roleBadge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #0F6E56;
+  background-color: #D9F0E8;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+}
