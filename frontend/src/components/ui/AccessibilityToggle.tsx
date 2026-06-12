@@ -7,5 +7,6 @@ export default function AccessibilityToggle() {
     return (
     <button onClick = {toggleAccessibilityMode}>
         {isAccessibilityMode ? "Accessibility Mode: ON" : "Accessibility Mode: OFF"}
-    </button>)
+    </button>
+    )
 }
