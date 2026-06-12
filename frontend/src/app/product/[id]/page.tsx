@@ -1,5 +1,6 @@
 import { products } from '@/data/products'
 import Link from 'next/link'
+import VerifiedBadge from '@/components/ui/VerifiedBadge'
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -10,6 +11,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     return (
     <div>
         <h1>{product.name}</h1>
+        {product.verified && <VerifiedBadge />}
         <p>{product.price}</p>
         <p>{product.description}</p>
         <p>{product.needsTag}</p>

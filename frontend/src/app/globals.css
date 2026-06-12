@@ -3,11 +3,18 @@
 :root {
   --color-background: #faf7f2;   /* warm cream */
   --color-primary: #2d5a3d;      /* dark green */
-  --color-accent: #c4622d;       /* burnt orange */
+  --color-accent: #c4622d;       /* burnt orange - accent colour only*/
   --color-text: #1a1a1a;
   --color-text-muted: #555555;
   --color-surface: #ffffff;
   --color-border: #ddd8cf;
+  --color-nav-bg: #f0ebe1;        /* warm cream, slightly deeper than background */
+  --color-nav-border: #ddd8cf;    /* reuse existing border */
+  --color-nav-surface: #e8e2d6;   /* bottom nav bg — visually distinct from page */
+  --color-nav-text-inactive: #3d3d3d;
+
+  --color-nav-active: #2d5a3d;
+  --color-nav-text: #1a1a1a;
 }
 
 *, *::before, *::after {
@@ -37,4 +44,34 @@ a {
 button, a {
   min-height: 44px;         /* minimum touch target */
   min-width: 44px;
+}
+
+
+.desktop-nav {
+  display: flex;
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--color-nav-surface);
+  border-top: 1px solid var(--color-nav-border);
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+  }
 }

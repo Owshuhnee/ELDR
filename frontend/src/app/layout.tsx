@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AccessibilityProvider } from "../context/AccessibilityContext"
 
+import Navbar from '@/components/ui/Navbar'  // works because it's the default export
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,10 +15,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-    title: 'ELDR',
-    description: 'An elderly-friendly marketplace platform',
-}
+
+export const metadata: Metadata = {
+  title: "ELDR - Accessible Marketplace for Elders/Seniors",
+  description: "An accessible online marketplace designed for older New Zealanders.",
+};
 
 export default function RootLayout({
   children,
@@ -28,11 +31,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <AccessibilityProvider>        
-          {children}
-        </AccessibilityProvider>
-        </body>
+    <body className="min-h-full flex flex-col">
+      <AccessibilityProvider>
+        <Navbar />
+        {children}
+      </AccessibilityProvider>
+    </body>
     </html>
   );
 }
