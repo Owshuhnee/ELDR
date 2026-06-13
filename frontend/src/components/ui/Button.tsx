@@ -1,5 +1,6 @@
 // Added a "danger" style variant
 import React from 'react'
+import { useAccessibility } from '../../context/AccessibilityContext'
 
 type Props = {
     variant: 'primary' | 'secondary' | 'danger'
@@ -52,12 +53,15 @@ export default function Button({
         }
     }
 
+    const { isAccessibilityMode } = useAccessibility()
+
     return (
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
             style={variants[variant]}
+            className={isAccessibilityMode ? 'a11y-btn' : ''}
         >
             {children}
         </button>

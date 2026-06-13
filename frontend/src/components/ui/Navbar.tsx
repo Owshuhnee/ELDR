@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import AccessibilityToggle from './AccessibilityToggle'
 
 export default function Navbar() {
     const pathname = usePathname()
@@ -47,6 +48,7 @@ export default function Navbar() {
                         >
                         Account
                         </Link>
+                        <AccessibilityToggle />
                     </div>
             </nav>
   
@@ -77,6 +79,7 @@ export default function Navbar() {
                 >
                 Account
                 </Link>
+                <AccessibilityToggle />
             </nav>
         </div>
     )
