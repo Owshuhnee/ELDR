@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import styles from './AccountPage.module.css'
+import Link from 'next/link'
+import Button from '@/components/ui/Button'
 
 // TSX BLUEPRINT
 interface User {
@@ -65,18 +67,18 @@ export default function AccountPage() {
         </div>
       )}
 
-      <div className={styles.menuList}>
+     <div className={styles.menuList}>
         {menuItems.map((item) => (
-          <a key={item.label} href={item.href} className={styles.menuButton}>
-            {item.label}
-          </a>
+            <Link key={item.label} href={item.href} style={{ textDecoration: 'none' }}>
+                <Button variant="secondary">{item.label}</Button>
+            </Link>
         ))}
-      </div>
+     </div>
 
-      <button onClick={handleLogout} className={styles.logoutButton}>
+        <Button variant="danger" onClick={handleLogout}>
         Logout
-      </button>
+    </Button>
     </main>
-  </div>
+  </div>    
 )
 }
