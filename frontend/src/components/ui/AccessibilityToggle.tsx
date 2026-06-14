@@ -4,12 +4,21 @@ export default function AccessibilityToggle() {
     const { isAccessibilityMode, toggleAccessibilityMode } = useAccessibility();
 
     return (
-        <button aria-pressed={isAccessibilityMode} aria-label="Accessibility Mode" onClick = {toggleAccessibilityMode}>
+        <button aria-pressed={isAccessibilityMode} aria-label="Accessibility Mode" onClick = {toggleAccessibilityMode} className="toggle-btn"
+            style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            }}>
             <div className="outButton" style={{
                 width: '50px',
                 height: '22px',
                 borderRadius: '999px',
-                backgroundColor: isAccessibilityMode ? 'var(--color-primary)' : 'var(--color-border)',
+                backgroundColor: isAccessibilityMode ? '#2d5a3d' : 'var(--color-border)',
                 padding: '2px',
             }}>
                 <div className="whiteCircle" style={{
