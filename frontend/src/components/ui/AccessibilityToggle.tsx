@@ -4,7 +4,7 @@ export default function AccessibilityToggle() {
     const { isAccessibilityMode, toggleAccessibilityMode } = useAccessibility();
 
     return (
-        <button aria-pressed={isAccessibilityMode} onClick = {toggleAccessibilityMode}>
+        <button aria-pressed={isAccessibilityMode} aria-label="Accessibility Mode" onClick = {toggleAccessibilityMode}>
             <div className="outButton" style={{
                 width: '50px',
                 height: '22px',

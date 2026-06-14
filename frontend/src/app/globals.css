@@ -28,16 +28,15 @@
     --color-nav-text: #000000;
     --color-nav-text-inactive: #333333;
     --color-nav-active: #000000;
-}
-
-.a11y-on body {
+    --color-primary: #000000;
+    --color-accent: #000000;
     font-size: 22px;
-}
 
-.a11y-btn {
-    padding: 18px 32px !important;
-    min-height: 56px !important;
-    font-size: 20px !important;
+    button {
+    padding: 18px 32px;
+    min-height: 56px;
+    font-size: 20px;
+    }
 }
 
 *, *::before, *::after {

@@ -25,6 +25,10 @@ export function AccessibilityProvider ({ children }: { children: ReactNode }) {
         if (saved !== null) {
             setIsAccessibilityMode(saved === 'true')}
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('accessibilityMode', String(isAccessibilityMode))
+    }, [isAccessibilityMode]);  // re-runs whenever this value changes
     
     useEffect (() => {
     if (isAccessibilityMode) {
