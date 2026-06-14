@@ -17,6 +17,28 @@
   --color-nav-text: #1a1a1a;
 }
 
+.a11y-on {
+    --color-background: #ffffff;
+    --color-surface: #ffffff;
+    --color-text: #000000;
+    --color-text-muted: #333333;
+    --color-nav-bg: #ffffff;
+    --color-nav-surface: #ffffff;
+    --color-nav-border: #000000;
+    --color-nav-text: #000000;
+    --color-nav-text-inactive: #333333;
+    --color-nav-active: #000000;
+    --color-primary: #000000;
+    --color-accent: #000000;
+    font-size: 22px;
+}
+
+.a11y-on button:not(.toggle-btn) {
+    padding: 18px 32px;
+    min-height: 56px;
+    font-size: 20px;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -68,10 +90,14 @@ button, a {
   .desktop-nav {
     display: none;
   }
-}
-
-@media (max-width: 768px) {
   .mobile-nav {
     display: flex;
+    z-index: 100;
+  }
+  body {
+    padding-bottom: 80px;
+  }
+  .product-grid {
+    grid-template-columns: 1fr !important;
   }
 }

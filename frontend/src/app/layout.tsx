@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AccessibilityProvider } from "../context/AccessibilityContext"
 
 import Navbar from '@/components/ui/Navbar'  // works because it's the default export
 
@@ -30,10 +31,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+    <body className="min-h-full flex flex-col">
+      <AccessibilityProvider>
         <Navbar />
         {children}
-        </body>
+      </AccessibilityProvider>
+    </body>
     </html>
   );
 }

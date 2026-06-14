@@ -1,10 +1,9 @@
-
-
 'use client';
 
 import ProductCard from '@/components/ui/ProductCard';
 import { useState } from 'react';
 import { products } from '@/data/products'
+import { useAccessibility } from '../context/AccessibilityContext'
 
 export default function Home() {
 
@@ -19,6 +18,7 @@ export default function Home() {
     return matchesCategory && matchesSearch;
     // product only shows if both conditions are true
   });
+  const { isAccessibilityMode } = useAccessibility()
 
   return (
     <main
@@ -74,12 +74,10 @@ export default function Home() {
         ))}
       </div>
 
-      <div style={{
+      <div className="product-grid" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateColumns: isAccessibilityMode ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
         gap: '3.0rem'
-
-
       }}>
         {filteredProducts.length === 0 ? (
           <p>No results</p>
