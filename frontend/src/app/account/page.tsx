@@ -24,7 +24,7 @@ const mockUser: User = {
 // BUTTONS
 const menuItems = [
   { label: 'Wishlist',              href: '/wishlist' },
-  { label: 'Purchase History',      href: '/orders' },
+  { label: 'Orders',                href: '/orders' },
   { label: 'Manage Family Access',  href: '/account/family' },
   { label: 'Settings',              href: '/account/settings' },
 ]
