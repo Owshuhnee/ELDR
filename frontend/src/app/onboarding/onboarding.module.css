@@ -1,0 +1,45 @@
+/* Full screen centered wrapper */
+.wrapper {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* The card containing the question and buttons */
+.card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* "Question 1 of 2" progress text */
+.progress {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* The question text */
+.question {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+/* Yes/No button stack */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Saving message shown while loading */
+.saving {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+}

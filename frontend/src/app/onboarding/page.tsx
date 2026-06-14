@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import styles from './onboarding.module.css'
+import Button from '@/components/ui/Button'
 
 const questions = [
   {
@@ -55,79 +57,35 @@ export default function OnboardingPage() {
     }
   }
 
-  return (
-    <main style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--background)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '2rem',
-    }}>
-      <div style={{
-        backgroundColor: 'var(--surface)',
-        borderRadius: '1rem',
-        padding: '3rem',
-        maxWidth: '600px',
-        width: '100%',
-        textAlign: 'center',
-      }}>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontSize: '1rem' }}>
+ return (
+    <main className={styles.wrapper}>
+      <div className={styles.card}>
+
+        {/* Progress indicator */}
+        <p className={styles.progress}>
           Question {step + 1} of {questions.length}
         </p>
 
-        <h1 style={{
-          fontSize: '1.75rem',
-          fontWeight: 'bold',
-          color: 'var(--text)',
-          marginBottom: '2.5rem',
-          lineHeight: '1.4',
-        }}>
+        {/* Question text */}
+        <h1 className={styles.question}>
           {currentQuestion.text}
         </h1>
 
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <button
-            onClick={() => handleAnswer(true)}
-            disabled={loading}
-            style={{
-              backgroundColor: 'var(--primary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.5rem',
-              padding: '1rem 3rem',
-              fontSize: '1.25rem',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              minWidth: '140px',
-            }}
-          >
+        {/* Yes / No buttons stacked vertically */}
+        <div className={styles.actions}>
+          <Button variant="primary" onClick={() => handleAnswer(true)} disabled={loading}>
             Yes
-          </button>
-          <button
-            onClick={() => handleAnswer(false)}
-            disabled={loading}
-            style={{
-              backgroundColor: 'var(--surface)',
-              color: 'var(--text)',
-              border: '2px solid var(--border)',
-              borderRadius: '0.5rem',
-              padding: '1rem 3rem',
-              fontSize: '1.25rem',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              minWidth: '140px',
-            }}
-          >
+          </Button>
+          <Button variant="secondary" onClick={() => handleAnswer(false)} disabled={loading}>
             No
-          </button>
+          </Button>
         </div>
 
+        {/* Shows while saving to backend */}
         {loading && (
-          <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)' }}>
-            Saving your preferences...
-          </p>
+          <p className={styles.saving}>Saving your preferences...</p>
         )}
+
       </div>
     </main>
   )
