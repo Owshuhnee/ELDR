@@ -1,22 +1,22 @@
 /* ── Layout ── */
 .page {
   min-height: 100vh;
-  background-color: #F5F5F0;
+  background-color: var(--color-background);
   display: flex;
   flex-direction: column;
 }
 
 .main {
   flex: 1;
-  padding: 1.25rem;
+  padding: 2rem 1.5rem;
 }
 
 /* ── Page title ── */
 .pageTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 1.25rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 2rem;
 }
 
 /* ── Order list ── */
@@ -28,13 +28,13 @@
 
 /* ── Order card ── */
 .orderCard {
-  background-color: #ffffff;
-  border: 1.5px solid #E5E7EB;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
   border-radius: 1rem;
   overflow: hidden;
 }
 
-/* ── Order header (the tappable row) ── */
+/* ── Order header ── */
 .orderHeader {
   width: 100%;
   background: none;
@@ -49,7 +49,7 @@
 }
 
 .orderHeader:hover {
-  background-color: #F9FAFB;
+  background-color: var(--color-background);
 }
 
 .orderMeta {
@@ -61,12 +61,12 @@
 .orderId {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
 }
 
 .orderDate {
   font-size: 0.75rem;
-  color: #6B7280;
+  color: var(--color-text-muted);
 }
 
 .orderRight {
@@ -78,19 +78,19 @@
 .orderTotal {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
 }
 
 /* ── Arrow indicator ── */
 .arrowDown {
   font-size: 1rem;
-  color: #6B7280;
+  color: var(--color-text-muted);
   transition: transform 0.2s ease;
 }
 
 .arrowUp {
   font-size: 1rem;
-  color: #6B7280;
+  color: var(--color-text-muted);
   display: inline-block;
   transform: rotate(180deg);
 }
@@ -99,7 +99,7 @@
 .statusDelivered {
   font-size: 0.7rem;
   font-weight: 500;
-  color: #0F6E56;
+  color: var(--color-primary);
   background-color: #D9F0E8;
   padding: 0.15rem 0.6rem;
   border-radius: 9999px;
@@ -125,7 +125,7 @@
 
 /* ── Expanded item list ── */
 .itemList {
-  border-top: 1px solid #E5E7EB;
+  border-top: 1px solid var(--color-border);
   padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
@@ -137,7 +137,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--color-text-muted);
 }
 
 .itemName {
@@ -145,14 +145,14 @@
 }
 
 .itemQty {
-  color: #6B7280;
+  color: var(--color-text-muted);
   min-width: 2rem;
   text-align: center;
 }
 
 .itemPrice {
   font-weight: 500;
-  color: #111827;
+  color: var(--color-text);
   min-width: 3.5rem;
   text-align: right;
 }
@@ -161,8 +161,8 @@
 .reorderButton {
   margin-top: 0.5rem;
   width: 100%;
-  background-color: #1D9E75;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: white;
   border: none;
   border-radius: 9999px;
   padding: 0.65rem 1rem;
@@ -172,7 +172,7 @@
 }
 
 .reorderButton:hover {
-  background-color: #0F6E56;
+  opacity: 0.9;
 }
 
 /* ── Empty state ── */
@@ -193,13 +193,13 @@
 .emptyTitle {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--color-text);
   margin: 0;
 }
 
 .emptySubtitle {
   font-size: 0.875rem;
-  color: #6B7280;
+  color: var(--color-text-muted);
   margin: 0;
   max-width: 260px;
   line-height: 1.6;
@@ -207,8 +207,8 @@
 
 .browseButton {
   margin-top: 0.5rem;
-  background-color: #1D9E75;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: white;
   border-radius: 9999px;
   padding: 0.75rem 2rem;
   font-size: 1rem;
@@ -217,7 +217,7 @@
 }
 
 .browseButton:hover {
-  background-color: #0F6E56;
+  opacity: 0.9;
 }
 
 /* ── Tab switcher ── */
@@ -230,35 +230,35 @@
 .tab {
   flex: 1;
   padding: 0.65rem 1rem;
-  border: 1.5px solid #E5E7EB;
+  border: 1.5px solid var(--color-border);
   border-radius: 9999px;
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   font-size: 0.875rem;
   font-weight: 500;
-  color: #6B7280;
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
 .tab:hover {
-  background-color: #F9FAFB;
+  background-color: var(--color-background);
 }
 
 .tabActive {
   flex: 1;
   padding: 0.65rem 1rem;
-  border: 1.5px solid #1D9E75;
+  border: 1.5px solid var(--color-primary);
   border-radius: 9999px;
-  background-color: #1D9E75;
+  background-color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 500;
-  color: #ffffff;
+  color: white;
   cursor: pointer;
 }
 
 /* ── Frequently bought card ── */
 .frequentRow {
   display: flex;
-  flex-direction:  column;
+  flex-direction: column;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
@@ -269,13 +269,14 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .imagePlaceholder {
   width: 6rem;
   height: 6rem;
   border-radius: 0.5rem;
-  background-color: #E5E7EB;
+  background-color: var(--color-border);
   flex-shrink: 0;
 }
 
@@ -290,7 +291,7 @@
 .frequentCategory {
   font-size: 0.7rem;
   font-weight: 500;
-  color: #0F6E56;
+  color: var(--color-primary);
   background-color: #D9F0E8;
   padding: 0.15rem 0.5rem;
   border-radius: 9999px;
@@ -300,19 +301,19 @@
 .frequentName {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
   margin: 0;
 }
 
 .frequentMeta {
   font-size: 0.75rem;
-  color: #6B7280;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .frequentPrice {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-muted);
   margin: 0;
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import styles from './PurchaseHistory.module.css'
+import styles from './orders.module.css'
 
 // ── INTERFACES ──
 interface OrderItem {
