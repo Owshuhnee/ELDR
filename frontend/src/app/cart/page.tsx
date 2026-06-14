@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import Button from '@/components/ui/Button'
+import styles from './cart.module.css'
 
 const placeholderItems = [
     { id: 1, product_id: 1, name: 'Ergonomic Grip Mug', price: 34.99, quantity: 1 },
@@ -18,125 +19,85 @@ export default function CartPage() {
         setCartItems(cartItems.filter(item => item.id !== itemId))
     }
 
+    function handleQuantityChange(itemId: number, change: number) {
+        setCartItems(cartItems.map(item =>
+            item.id === itemId
+                ? { ...item, quantity: Math.max(1, item.quantity + change) }
+                : item
+        ))
+    }
+
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
     return (
-        <main style={{
-            maxWidth: '800px',
-            margin: '0 auto',
-            padding: '2rem 1.5rem',
-        }}>
+        <main className={styles.page}>
 
-            <h1 style={{
-                fontSize: '2rem',
-                fontWeight: 700,
-                color: 'var(--color-primary)',
-                marginBottom: '2rem',
-            }}>
-                Your Cart
-            </h1>
-
-            <Link href="/">← Back to products</Link>
+            <h1 className={styles.title}>Your Cart</h1>
 
             {cartItems.length === 0 ? (
-                <p style={{
-                    color: 'var(--color-text-muted)',
-                    marginTop: '2rem',
-                }}>
-                    Your cart is empty.
-                </p>
+                <p className={styles.empty}>Your cart is empty.</p>
             ) : (
-                <div style={{ marginTop: '2rem' }}>
+                <div className={styles.itemList}>
 
                     {cartItems.map(item => (
-                        <div key={item.id} style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '1.5rem',
-                            marginBottom: '1rem',
-                            backgroundColor: 'var(--color-surface)',
-                            borderRadius: '12px',
-                            border: '1px solid var(--color-border)',
-                        }}>
-                            <div>
-                                <p style={{
-                                    fontSize: '18px',
-                                    fontWeight: 600,
-                                    color: 'var(--color-text)',
-                                    marginBottom: '4px',
-                                }}>
-                                    {item.name}
-                                </p>
-                                <p style={{
-                                    color: 'var(--color-text-muted)',
-                                    fontSize: '16px',
-                                }}>
-                                    Qty: {item.quantity} × ${item.price.toFixed(2)}
-                                </p>
+                        <div key={item.id} className={styles.item}>
+
+                            {/* Product image placeholder */}
+                            <div className={styles.itemImage} />
+
+                            {/* Product name and price */}
+                            <div className={styles.itemInfo}>
+                                <p className={styles.itemName}>{item.name}</p>
+                                <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
+
+                                {/* Quantity controls */}
+                                <div className={styles.quantity}>
+                                    <button
+                                        className={styles.quantityBtn}
+                                        onClick={() => handleQuantityChange(item.id, -1)}
+                                    >
+                                        −
+                                    </button>
+                                    <span className={styles.quantityNumber}>{item.quantity}</span>
+                                    <button
+                                        className={styles.quantityBtn}
+                                        onClick={() => handleQuantityChange(item.id, 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
                             </div>
 
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '1rem',
-                            }}>
-                                <p style={{
-                                    fontSize: '20px',
-                                    fontWeight: 700,
-                                    color: 'var(--color-text)',
-                                }}>
+                            {/* Item total and remove button */}
+                            <div>
+                                <p className={styles.itemTotal}>
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </p>
-
-                               <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
+                                <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
                                     Remove
                                 </Button>
-                                
                             </div>
+
                         </div>
                     ))}
 
-                    <div style={{
-                        borderTop: '2px solid var(--color-border)',
-                        paddingTop: '1.5rem',
-                        marginTop: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}>
-                        <p style={{
-                            fontSize: '20px',
-                            fontWeight: 700,
-                            color: 'var(--color-text)',
-                        }}>
-                            Total
-                        </p>
-                        <p style={{
-                            fontSize: '24px',
-                            fontWeight: 700,
-                            color: 'var(--color-primary)',
-                        }}>
-                            ${total.toFixed(2)}
-                        </p>
+                    {/* Total row */}
+                    <div className={styles.footer}>
+                        <p className={styles.totalLabel}>Total</p>
+                        <p className={styles.totalAmount}>${total.toFixed(2)}</p>
                     </div>
 
-                    <div style={{ marginTop: '1.5rem' }}>
-                        <Link
-                            href="/checkout"
-                            style={{
-                                display: 'block',
-                                textAlign: 'center',
-                                padding: '16px',
-                                backgroundColor: 'var(--color-primary)',
-                                color: 'white',
-                                borderRadius: '12px',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Proceed to Checkout
+                    {/* Action buttons */}
+                    <div className={styles.actions}>
+                        <Link href="/checkout" style={{ textDecoration: 'none' }}>
+                            <Button variant="primary" type="button">
+                                Proceed to Checkout
+                            </Button>
+                        </Link>
+                        <Link href="/" style={{ textDecoration: 'none' }}>
+                            <Button variant="secondary" type="button">
+                                Continue Shopping
+                            </Button>
                         </Link>
                     </div>
 
