@@ -1,20 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --color-background: #faf7f2;   /* warm cream */
-  --color-primary: #2d5a3d;      /* dark green */
-  --color-accent: #c4622d;       /* burnt orange - accent colour only*/
+  /* === Mid-fi palette replacements =============================================
+     The values below replace the original warm-cream/dark-green theme to bring
+     the UI closer to the Figma mid-fi designs. Replaced originals are commented
+     out above each new value so the change is easy to trace.
+     ========================================================================= */
+
+  /* --color-background: #faf7f2; */
+  --color-background: #F5F5F0;        /* Warm White (mid-fi) */
+
+  /* --color-primary: #2d5a3d; */
+  --color-primary: #1A1A2E;           /* Navy (mid-fi) */
+
+  --color-accent: #c4622d;            /* burnt orange - accent colour only */
   --color-text: #1a1a1a;
   --color-text-muted: #555555;
   --color-surface: #ffffff;
-  --color-border: #ddd8cf;
-  --color-nav-bg: #f0ebe1;        /* warm cream, slightly deeper than background */
-  --color-nav-border: #ddd8cf;    /* reuse existing border */
-  --color-nav-surface: #e8e2d6;   /* bottom nav bg — visually distinct from page */
+
+  /* --color-border: #ddd8cf; */
+  --color-border: #E8E8E4;            /* Border Grey (mid-fi) */
+
+  --color-nav-bg: #f0ebe1;            /* warm cream, slightly deeper than background */
+
+  /* --color-nav-border: #ddd8cf; */
+  --color-nav-border: #E8E8E4;        /* Border Grey (mid-fi) */
+
+  --color-nav-surface: #e8e2d6;       /* bottom nav bg — visually distinct from page */
   --color-nav-text-inactive: #3d3d3d;
 
-  --color-nav-active: #2d5a3d;
+  /* --color-nav-active: #2d5a3d; */
+  --color-nav-active: #2D7A5E;        /* Trust Green (mid-fi) */
   --color-nav-text: #1a1a1a;
+
+  /* New tokens added for mid-fi */
+  --color-trust-green: #2D7A5E;       /* Trust Green */
+  --color-mint-surface: #E1F5EE;      /* Mint Surface */
 }
 
 .a11y-on {
