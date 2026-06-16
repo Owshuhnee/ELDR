@@ -1,0 +1,319 @@
+/* ── Layout ── */
+.page {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Page title ── */
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 2rem;
+}
+
+/* ── Order list ── */
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Order card ── */
+.orderCard {
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* ── Order header ── */
+.orderHeader {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.orderHeader:hover {
+  background-color: var(--color-background);
+}
+
+.orderMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.orderId {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.orderDate {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.orderRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orderTotal {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Arrow indicator ── */
+.arrowDown {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  transition: transform 0.2s ease;
+}
+
+.arrowUp {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+/* ── Status badges ── */
+.statusDelivered {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: #D9F0E8;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.statusProcessing {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #854F0B;
+  background-color: #FAEEDA;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.statusCancelled {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #A32D2D;
+  background-color: #FCEBEB;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+}
+
+/* ── Expanded item list ── */
+.itemList {
+  border-top: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.itemName {
+  flex: 1;
+}
+
+.itemQty {
+  color: var(--color-text-muted);
+  min-width: 2rem;
+  text-align: center;
+}
+
+.itemPrice {
+  font-weight: 500;
+  color: var(--color-text);
+  min-width: 3.5rem;
+  text-align: right;
+}
+
+/* ── Reorder button ── */
+.reorderButton {
+  margin-top: 0.5rem;
+  width: 100%;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.reorderButton:hover {
+  opacity: 0.9;
+}
+
+/* ── Empty state ── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+}
+
+.emptyTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.emptySubtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 260px;
+  line-height: 1.6;
+}
+
+.browseButton {
+  margin-top: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.browseButton:hover {
+  opacity: 0.9;
+}
+
+/* ── Tab switcher ── */
+.tabRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 9999px;
+  background-color: var(--color-surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background-color: var(--color-background);
+}
+
+.tabActive {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+}
+
+/* ── Frequently bought card ── */
+.frequentRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.frequentTop {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.imagePlaceholder {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-border);
+  flex-shrink: 0;
+}
+
+.frequentInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.frequentCategory {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: #D9F0E8;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  width: fit-content;
+}
+
+.frequentName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.frequentMeta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.frequentPrice {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin: 0;
+}

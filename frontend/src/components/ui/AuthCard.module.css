@@ -1,0 +1,14 @@
+.wrapper {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.33rem;
+}
+
+.card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.2rem;
+}

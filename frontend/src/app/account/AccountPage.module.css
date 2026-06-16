@@ -1,22 +1,20 @@
 /* ── Layout ── */
 .page {
-  min-height: 100vh;
-  background-color: #F5F5F0;
-  display: flex;
-  flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
 }
 
 .main {
   flex: 1;
-  padding: 1.25rem;
 }
 
 /* ── Page heading ── */
 .pageTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 1.25rem 0;
+  font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 2rem;
 }
 
 /* ── Avatar ── */
@@ -24,7 +22,7 @@
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background-color: #D1D5DB;
+  background-color: var(--color-border);
   margin: 0 auto 1.5rem auto;
 }
 
@@ -39,7 +37,7 @@
 
 .helperText {
   font-size: 0.875rem;
-  color: #1A4A36;
+  color: var(--color-primary);
   line-height: 1.6;
   margin: 0;
 }
@@ -56,26 +54,26 @@
   display: block;
   width: 100%;
   text-align: center;
-  border: 2px solid #111827;
+  border: 2px solid var(--color-text);
   border-radius: 9999px;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   font-weight: 500;
-  color: #111827;
-  background-color: #ffffff;
+  color: var(--color-text);
+  background-color: var(--color-surface);
   text-decoration: none;
   transition: background-color 0.15s ease;
 }
 
 .menuButton:hover {
-  background-color: #F9FAFB;
+  background-color: var(--color-background);
 }
 
 /* ── Logout button ── */
 .logoutButton {
   width: 100%;
-  background-color: #4B5563;
-  color: #ffffff;
+  background-color: var(--color-text-muted);
+  color: var(--color-surface);
   border: none;
   border-radius: 9999px;
   padding: 0.75rem 1rem;
@@ -86,7 +84,7 @@
 }
 
 .logoutButton:hover {
-  background-color: #374151;
+  background-color: var(--color-text);
 }
 
 /* ── Identity block (name + role badge) ── */
@@ -101,14 +99,14 @@
 .userName {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
   margin: 0;
 }
 
 .roleBadge {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #0F6E56;
+  color: var(--color-primary);
   background-color: #D9F0E8;
   padding: 0.2rem 0.75rem;
   border-radius: 9999px;

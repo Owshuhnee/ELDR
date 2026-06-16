@@ -1,0 +1,43 @@
+/* Base styles shared by all button variants */
+.btn {
+    width: 100%;
+    border-radius: 1.5rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+    min-height: 2.75rem;
+    display: block;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Filled green - primary action */
+.primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* Outlined - secondary action */
+.secondary {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 2px solid var(--color-text);
+}
+
+/* Danger - destructive action */
+.danger {
+    background-color: transparent;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+/* Inline / not full width */
+.inline {
+    width: auto;
+}

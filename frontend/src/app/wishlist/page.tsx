@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import styles from './WishlistPage.module.css'
+import styles from './wishlist.module.css'
+import Button from '@/components/ui/Button'
 
 interface WishlistItem {
   id: number
