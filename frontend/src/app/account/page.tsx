@@ -27,7 +27,7 @@ const mockUser: User = {
 const menuItems = [
   { label: 'Wishlist',              href: '/wishlist' },
   { label: 'Orders',                href: '/orders' },
-  { label: 'Manage Family Access',  href: '/account/family' },
+  { label: 'Manage Caregiver',  href: '/caregiver' },
   { label: 'Settings',              href: '/account/settings' },
 ]
 
