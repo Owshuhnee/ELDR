@@ -10,55 +10,94 @@ from app.models import User, UserLink
 caregiver_bp = Blueprint('caregiver', __name__, url_prefix='/api/caregiver')
 
 
-# POST /api/caregiver/link
-# Caregiver sends a link request to an elder using their email
-@caregiver_bp.route('/link', methods=['POST'])
-def send_link_request():
+# POST /api/caregiver/accept
+# Elder accepts a pending link request from a caregiver
+@caregiver_bp.route('/accept', methods=['POST'])
+def accept_link_request():
 
-    # Check the user is logged in — session holds their id from login
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
 
-    # Grab the JSON body sent from the frontend
-    data = request.get_json()
+    data      = request.get_json()
+    helper_id = data.get('helper_id')
 
-    # Pull out the elder's email and relationship type from the request
-    elder_email  = data.get('elder_email')
-    relationship = data.get('relationship', 'caregiver')
-
-    # If no email was provided, stop here and tell the frontend
-    if not elder_email:
-        return jsonify({'error': 'Elder email is required'}), 400
+    if not helper_id:
+        return jsonify({'error': 'helper_id is required'}), 400
 
     db = SessionLocal()
 
     try:
-        # Look up the elder by email in the users table
-        elder = db.query(User).filter(User.email == elder_email).first()
+        link = db.query(UserLink).filter(
+            UserLink.elder_id  == session['user_id'],
+            UserLink.helper_id == helper_id,
+            UserLink.status    == 'pending'
+        ).first()
 
-        # If no user found with that email, return an error
-        if not elder:
+        if not link:
+            return jsonify({'error': 'No pending request found'}), 404
+
+        link.status = 'accepted'
+        db.commit()
+
+        return jsonify({'message': 'Link request accepted'}), 200
+
+    finally:
+        db.close()
+
+
+# POST /api/caregiver/link
+# Either a caregiver sends a request to an elder
+# OR an elder sends a request to a caregiver
+@caregiver_bp.route('/link', methods=['POST'])
+def send_link_request():
+
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not logged in'}), 401
+
+    data         = request.get_json()
+    target_email = data.get('target_email')
+    relationship = data.get('relationship', 'caregiver')
+
+    if not target_email:
+        return jsonify({'error': 'target_email is required'}), 400
+
+    db = SessionLocal()
+
+    try:
+        # Find the target user by email
+        target = db.query(User).filter(User.email == target_email).first()
+
+        if not target:
             return jsonify({'error': 'No user found with that email'}), 404
 
-        # Make sure the target user is actually an elder, not another caregiver
-        if elder.role != 'elder':
-            return jsonify({'error': 'That user is not an elder account'}), 400
+        user_id     = session['user_id']
+        logged_user = db.query(User).filter(User.id == user_id).first()
 
-        # Get the logged-in user's id from the session
-        helper_id = session['user_id']
+        # Work out who is elder and who is helper based on roles
+        # If logged-in user is elder, they are inviting a caregiver
+        # If logged-in user is caregiver, they are inviting an elder
+        if logged_user.role == 'elder':
+            if target.role not in ['caregiver', 'family']:
+                return jsonify({'error': 'That user is not a caregiver account'}), 400
+            elder_id  = user_id
+            helper_id = target.id
+        else:
+            if target.role != 'elder':
+                return jsonify({'error': 'That user is not an elder account'}), 400
+            elder_id  = target.id
+            helper_id = user_id
 
-        # Check if a link already exists between these two users
+        # Check if a link already exists
         existing = db.query(UserLink).filter(
-            UserLink.elder_id  == elder.id,
+            UserLink.elder_id  == elder_id,
             UserLink.helper_id == helper_id
         ).first()
 
         if existing:
             return jsonify({'error': 'Link request already exists'}), 400
 
-        # Create the new link row — status defaults to 'pending'
         new_link = UserLink(
-            elder_id     = elder.id,
+            elder_id     = elder_id,
             helper_id    = helper_id,
             relationship = relationship
         )
@@ -69,50 +108,8 @@ def send_link_request():
         return jsonify({'message': 'Link request sent successfully'}), 201
 
     finally:
-        # Always close the database connection when done
         db.close()
 
-
-# POST /api/caregiver/accept
-# Elder accepts a pending link request from a caregiver
-@caregiver_bp.route('/accept', methods=['POST'])
-def accept_link_request():
-
-    # Make sure the elder is logged in
-    if 'user_id' not in session:
-        return jsonify({'error': 'Not logged in'}), 401
-
-    data = request.get_json()
-
-    # The frontend sends the helper's id whose request we want to accept
-    helper_id = data.get('helper_id')
-
-    if not helper_id:
-        return jsonify({'error': 'helper_id is required'}), 400
-
-    db = SessionLocal()
-
-    try:
-        # Find the pending link where this user is the elder
-        # and the helper matches the id sent from the frontend
-        link = db.query(UserLink).filter(
-            UserLink.elder_id  == session['user_id'],
-            UserLink.helper_id == helper_id,
-            UserLink.status    == 'pending'
-        ).first()
-
-        # If no matching pending request found, return an error
-        if not link:
-            return jsonify({'error': 'No pending request found'}), 404
-
-        # Update the status from 'pending' to 'accepted'
-        link.status = 'accepted'
-        db.commit()
-
-        return jsonify({'message': 'Link request accepted'}), 200
-
-    finally:
-        db.close()
 
 # GET /api/caregiver/links
 # Returns all accepted links for the logged-in user
@@ -171,6 +168,48 @@ def get_links():
                 })
 
         return jsonify({'links': result}), 200
+
+    finally:
+        db.close()
+
+# DELETE /api/caregiver/unlink
+# Either the elder or caregiver can remove an existing link
+@caregiver_bp.route('/unlink', methods=['DELETE'])
+def unlink():
+
+    # Make sure the user is logged in
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not logged in'}), 401
+
+    data = request.get_json()
+
+    # The frontend sends the link_id they want to remove
+    link_id = data.get('link_id')
+
+    if not link_id:
+        return jsonify({'error': 'link_id is required'}), 400
+
+    db = SessionLocal()
+
+    try:
+        # Find the link by id
+        link = db.query(UserLink).filter(UserLink.id == link_id).first()
+
+        # If no link found, return an error
+        if not link:
+            return jsonify({'error': 'Link not found'}), 404
+
+        # Make sure the logged-in user is part of this link
+        # They must be either the elder or the helper — not a stranger
+        user_id = session['user_id']
+        if link.elder_id != user_id and link.helper_id != user_id:
+            return jsonify({'error': 'Not authorised to remove this link'}), 403
+
+        # Delete the link row from the database
+        db.delete(link)
+        db.commit()
+
+        return jsonify({'message': 'Link removed successfully'}), 200
 
     finally:
         db.close()

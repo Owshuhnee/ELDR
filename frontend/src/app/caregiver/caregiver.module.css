@@ -123,3 +123,17 @@
   padding: 24px;
   color: var(--color-text-secondary);
 }
+
+/* Remove button — sits below the link details */
+.removeButton {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: transparent;
+  color: #cc0000;
+  border: 2px solid #cc0000;
+  border-radius: 50px;
+  cursor: pointer;
+  min-height: 44px;
+}

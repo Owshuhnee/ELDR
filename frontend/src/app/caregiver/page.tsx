@@ -80,7 +80,7 @@ export default function FamilyPage() {
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },
         body:        JSON.stringify({
-          elder_email:  elderEmail,
+          target_email:  elderEmail,
           relationship: 'caregiver'
         })
       })
@@ -96,9 +96,32 @@ export default function FamilyPage() {
     }
   }
 
+  // removeLink calls the backend to delete the link by id
+  // then refreshes the links list so the card disappears
+  const removeLink = async (linkId: number) => {
+    setMessage('')
+    try {
+      const res = await fetch('http://localhost:5000/api/caregiver/unlink', {
+        method:      'DELETE',
+        credentials: 'include',
+        headers:     { 'Content-Type': 'application/json' },
+        body:        JSON.stringify({ link_id: linkId })
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setMessage('Link removed')
+        fetchLinks()
+      } else {
+        setMessage(data.error || 'Could not remove link')
+      }
+    } catch {
+      setMessage('Could not remove link')
+    }
+  }
+
   if (loading) return <p className={styles.loading}>Loading...</p>
 
-  return (
+   return (
     <div className={styles.page}>
 
       {/* Page header */}
@@ -123,28 +146,40 @@ export default function FamilyPage() {
               <p className={styles.linkName}>{link.name}</p>
               <p className={styles.linkEmail}>{link.email}</p>
               <p className={styles.linkRole}>{link.relationship}</p>
+
+              {/* Remove button — calls the unlink endpoint with this link's id */}
+              <button
+                className={styles.removeButton}
+                onClick={() => removeLink(link.link_id)}
+              >
+                Remove
+              </button>
             </div>
           ))
         )}
       </section>
 
-      {/* Only caregivers see the link request form */}
-      {currentUser?.role === 'caregiver' && (
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Link to an Elder</h2>
-          <input
-            className={styles.input}
-            type="email"
-            placeholder="Enter elder's email"
-            value={elderEmail}
-            onChange={e => setElderEmail(e.target.value)}
-          />
-          <button className={styles.button} onClick={sendLinkRequest}>
-            Send Link Request
-          </button>
-          {message && <p className={styles.message}>{message}</p>}
-        </section>
-      )}
+      {/* Both elders and caregivers can send a link request */}
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>
+        {currentUser?.role === 'elder' ? 'Add a Caregiver' : 'Link to an Elder'}
+      </h2>
+      <input
+        className={styles.input}
+        type="email"
+        placeholder={
+          currentUser?.role === 'elder'
+            ? "Enter caregiver's email"
+            : "Enter elder's email"
+        }
+        value={elderEmail}
+        onChange={e => setElderEmail(e.target.value)}
+      />
+      <button className={styles.button} onClick={sendLinkRequest}>
+        Send Link Request
+      </button>
+      {message && <p className={styles.message}>{message}</p>}
+    </section>
 
     </div>
   )
