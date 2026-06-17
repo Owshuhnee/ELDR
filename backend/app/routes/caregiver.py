@@ -11,31 +11,34 @@ caregiver_bp = Blueprint('caregiver', __name__, url_prefix='/api/caregiver')
 
 
 # POST /api/caregiver/accept
-# Elder accepts a pending link request from a caregiver
+# Elder accepts a pending link request using the link_id
 @caregiver_bp.route('/accept', methods=['POST'])
 def accept_link_request():
 
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
 
-    data      = request.get_json()
-    helper_id = data.get('helper_id')
+    data    = request.get_json()
+    link_id = data.get('link_id')
 
-    if not helper_id:
-        return jsonify({'error': 'helper_id is required'}), 400
+    if not link_id:
+        return jsonify({'error': 'link_id is required'}), 400
 
     db = SessionLocal()
 
     try:
+        # Find the pending link by id
+        # Make sure the logged-in user is the elder on this link
         link = db.query(UserLink).filter(
-            UserLink.elder_id  == session['user_id'],
-            UserLink.helper_id == helper_id,
-            UserLink.status    == 'pending'
+            UserLink.id       == link_id,
+            UserLink.elder_id == session['user_id'],
+            UserLink.status   == 'pending'
         ).first()
 
         if not link:
             return jsonify({'error': 'No pending request found'}), 404
 
+        # Update status to accepted
         link.status = 'accepted'
         db.commit()
 
@@ -72,6 +75,10 @@ def send_link_request():
 
         user_id     = session['user_id']
         logged_user = db.query(User).filter(User.id == user_id).first()
+
+        # If user not found in database, session is stale — ask them to log in again
+        if not logged_user:
+            return jsonify({'error': 'Session expired, please log in again'}), 401
 
         # Work out who is elder and who is helper based on roles
         # If logged-in user is elder, they are inviting a caregiver
@@ -213,3 +220,63 @@ def unlink():
 
     finally:
         db.close()
+
+
+# GET /api/caregiver/pending
+# Returns all pending link requests for the logged-in user
+@caregiver_bp.route('/pending', methods=['GET'])
+def get_pending():
+
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not logged in'}), 401
+
+    user_id = session['user_id']
+    db      = SessionLocal()
+
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+
+        if not user:
+            return jsonify({'error': 'User not found'}), 401
+
+        # Find all pending links where the logged-in user is involved
+        if user.role == 'elder':
+            # Elder sees pending requests from caregivers
+            links = db.query(UserLink).filter(
+                UserLink.elder_id == user_id,
+                UserLink.status   == 'pending'
+            ).all()
+
+            result = []
+            for link in links:
+                helper = db.query(User).filter(User.id == link.helper_id).first()
+                result.append({
+                    'link_id':      link.id,
+                    'helper_id':    helper.id,
+                    'name':         f"{helper.first_name} {helper.last_name}",
+                    'email':        helper.email,
+                    'relationship': link.relationship
+                })
+
+        else:
+            # Caregiver sees pending requests they sent
+            links = db.query(UserLink).filter(
+                UserLink.helper_id == user_id,
+                UserLink.status    == 'pending'
+            ).all()
+
+            result = []
+            for link in links:
+                elder = db.query(User).filter(User.id == link.elder_id).first()
+                result.append({
+                    'link_id':      link.id,
+                    'elder_id':     elder.id,
+                    'name':         f"{elder.first_name} {elder.last_name}",
+                    'email':        elder.email,
+                    'relationship': link.relationship
+                })
+
+        return jsonify({'pending': result}), 200
+
+    finally:
+        db.close() 
