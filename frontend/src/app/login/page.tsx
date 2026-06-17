@@ -28,6 +28,7 @@ export default function LoginPage() {
         try {
             const response = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
@@ -35,8 +36,11 @@ export default function LoginPage() {
             const data = await response.json()
 
             if (response.ok) {
-                localStorage.setItem('user_id', data.user.id)
+                // Save the full user object so any page can read role, name, email
+                localStorage.setItem('user', JSON.stringify(data.user))
                 window.location.href = '/'
+            } else {
+                setError(data.error || 'Login failed')
             }
 
         } catch (err) {

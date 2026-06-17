@@ -38,3 +38,6 @@ app.register_blueprint(onboarding_bp)
 
 from app.routes.cart import cart_bp
 app.register_blueprint(cart_bp)
+
+from app.routes.caregiver import caregiver_bp
+app.register_blueprint(caregiver_bp)
