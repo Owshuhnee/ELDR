@@ -21,17 +21,15 @@
   /* --color-border: #ddd8cf; */
   --color-border: #E8E8E4;            /* Border Grey (mid-fi) */
 
-  --color-nav-bg: #f0ebe1;            /* warm cream, slightly deeper than background */
+  --color-nav-bg: #1A1A2E;            /* Dark Navy (mid-fi header) */
 
-  /* --color-nav-border: #ddd8cf; */
-  --color-nav-border: #E8E8E4;        /* Border Grey (mid-fi) */
+  --color-nav-border: rgba(255, 255, 255, 0.12);  /* subtle divider on dark nav */
 
-  --color-nav-surface: #e8e2d6;       /* bottom nav bg — visually distinct from page */
-  --color-nav-text-inactive: #3d3d3d;
+  --color-nav-surface: #1A1A2E;       /* dark mobile bottom nav */
+  --color-nav-text-inactive: rgba(255, 255, 255, 0.55);
 
-  /* --color-nav-active: #2d5a3d; */
   --color-nav-active: #2D7A5E;        /* Trust Green (mid-fi) */
-  --color-nav-text: #1a1a1a;
+  --color-nav-text: #ffffff;
 
   /* New tokens added for mid-fi */
   --color-trust-green: #2D7A5E;       /* Trust Green */
@@ -84,6 +82,12 @@ a {
   text-decoration: underline;
 }
 
+input[type="search"]:focus,
+input[type="text"]:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+}
+
 button, a {
   min-height: 44px;         /* minimum touch target */
   min-width: 44px;
@@ -92,6 +96,10 @@ button, a {
 
 .desktop-nav {
   display: flex;
+}
+
+.mobile-header {
+  display: none;
 }
 
 .mobile-nav {
@@ -111,12 +119,28 @@ button, a {
   .desktop-nav {
     display: none;
   }
+  .mobile-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: var(--color-nav-bg);
+    border-bottom: 1px solid var(--color-nav-border);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 100;
+    color: var(--color-nav-text);
+  }
   .mobile-nav {
     display: flex;
     z-index: 100;
   }
   body {
     padding-bottom: 80px;
+    padding-top: 64px;
   }
   .product-grid {
     grid-template-columns: 1fr !important;
