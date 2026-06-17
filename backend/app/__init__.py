@@ -41,3 +41,6 @@ app.register_blueprint(cart_bp)
 
 from app.routes.caregiver import caregiver_bp
 app.register_blueprint(caregiver_bp)
+
+from app.routes.orders import orders_bp
+app.register_blueprint(orders_bp)

@@ -1,94 +1,78 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './orders.module.css'
 
-// ── INTERFACES ──
+// Shape of each item inside an order
 interface OrderItem {
-  id: number
-  name: string
+  id:       number
+  name:     string
   quantity: number
-  price: number
+  price:    number
 }
 
+// Shape of each order from the backend
 interface Order {
-  id: string
-  date: string
-  status: 'Delivered' | 'Processing' | 'Cancelled'
-  total: number
-  items: OrderItem[]
+  id:     number
+  date:   string
+  status: string
+  total:  number
+  items:  OrderItem[]
 }
 
-interface FrequentItem {
-  id: number
-  name: string
-  category: string
-  price: number
-  // How many times this product has been ordered
-  orderCount: number
-}
-
-// ── PLACEHOLDER ONLY ──
-const mockOrders: Order[] = [
-  {
-    id: 'ORD-001',
-    date: '12 June 2026',
-    status: 'Delivered',
-    total: 59.98,
-    items: [
-      { id: 1, name: 'Ergonomic Grip Mug', quantity: 1, price: 24.99 },
-      { id: 2, name: 'Non-Slip Bath Mat',  quantity: 1, price: 34.99 },
-    ],
-  },
-  {
-    id: 'ORD-002',
-    date: '28 May 2026',
-    status: 'Delivered',
-    total: 39.99,
-    items: [
-      { id: 3, name: 'Large Button Remote', quantity: 1, price: 39.99 },
-    ],
-  },
-  {
-    id: 'ORD-003',
-    date: '10 May 2026',
-    status: 'Cancelled',
-    total: 24.99,
-    items: [
-      { id: 4, name: 'Ergonomic Grip Mug', quantity: 1, price: 24.99 },
-    ],
-  },
-]
-
-// Sorted by orderCount descending - most ordered appears first
-const mockFrequent: FrequentItem[] = [
-  { id: 1, name: 'Ergonomic Grip Mug',  category: 'Daily Living', price: 24.99, orderCount: 3 },
-  { id: 2, name: 'Non-Slip Bath Mat',   category: 'Mobility',     price: 34.99, orderCount: 2 },
-  { id: 3, name: 'Large Button Remote', category: 'Vision',       price: 39.99, orderCount: 1 },
-]
-
-// TAB Type, Only 2 Values
 type Tab = 'frequent' | 'history'
 
 export default function OrdersPage() {
+  const router = useRouter()
 
-  // activeTab controls which view is shown.
-  // Defaults to 'frequent' as agreed.
-  const [activeTab, setActiveTab] = useState<Tab>('frequent')
+  const [activeTab, setActiveTab]   = useState<Tab>('history')
+  const [expandedId, setExpandedId] = useState<number | null>(null)
+  const [orders, setOrders]         = useState<Order[]>([])
+  const [loading, setLoading]       = useState(true)
+  const [error, setError]           = useState('')
 
-  // expandedId tracks which order card is open in the history tab.
-  const [expandedId, setExpandedId] = useState<string | null>(null)
+  useEffect(() => {
+    fetchOrders()
+  }, [])
 
-  function handleToggle(id: string) {
+  const fetchOrders = async () => {
+    try {
+      const stored = localStorage.getItem('user')
+      if (!stored) {
+        router.push('/login')
+        return
+      }
+
+      const res  = await fetch('http://localhost:5000/api/orders/history', {
+        credentials: 'include'
+      })
+      const data = await res.json()
+
+      if (res.ok) {
+        setOrders(data.orders || [])
+      } else {
+        setError(data.error || 'Could not load orders')
+      }
+    } catch {
+      setError('Could not connect to server')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function handleToggle(id: number) {
     setExpandedId(expandedId === id ? null : id)
   }
 
-  function getStatusClass(status: Order['status']) {
-    if (status === 'Delivered')  return styles.statusDelivered
-    if (status === 'Processing') return styles.statusProcessing
-    if (status === 'Cancelled')  return styles.statusCancelled
+  function getStatusClass(status: string) {
+    if (status === 'delivered')  return styles.statusDelivered
+    if (status === 'processing') return styles.statusProcessing
+    if (status === 'cancelled')  return styles.statusCancelled
     return styles.statusDelivered
   }
+
+  if (loading) return <p style={{ padding: '24px' }}>Loading orders...</p>
 
   return (
     <div className={styles.page}>
@@ -96,8 +80,7 @@ export default function OrdersPage() {
 
         <h1 className={styles.pageTitle}>Orders</h1>
 
-        {/* ── Tab switcher ── */}
-        {/* Each button sets activeTab, which controls what renders below */}
+        {/* Tab switcher */}
         <div className={styles.tabRow}>
           <button
             className={activeTab === 'frequent' ? styles.tabActive : styles.tab}
@@ -113,54 +96,34 @@ export default function OrdersPage() {
           </button>
         </div>
 
-        {/* ── FREQUENTLY BOUGHT VIEW ── */}
+        {/* Frequently Bought — coming soon */}
         {activeTab === 'frequent' && (
           <div className={styles.orderList}>
-            {mockFrequent.map((item) => (
-            <div key={item.id} className={styles.orderCard}>
-              <div className={styles.frequentRow}>
-
-                <div className={styles.frequentTop}>
-                  <div className={styles.imagePlaceholder} />
-                  <div className={styles.frequentInfo}>
-                    <span className={styles.frequentCategory}>{item.category}</span>
-                    <p className={styles.frequentName}>{item.name}</p>
-                    <p className={styles.frequentMeta}>
-                      Ordered {item.orderCount} {item.orderCount === 1 ? 'time' : 'times'}
-                    </p>
-                    <p className={styles.frequentPrice}>${item.price.toFixed(2)}</p>
-                  </div>
-                </div>
-
-                <button
-                  className={styles.reorderButton}
-                  onClick={() => console.log(`Reorder ${item.name}`)}
-                >
-                  Reorder
-                </button>
-
-              </div>
-            </div>
-            ))}
+            <p style={{ padding: '24px', color: 'gray' }}>
+              Frequently bought items coming soon.
+            </p>
           </div>
         )}
 
-        {/* ── ORDER HISTORY VIEW ── */}
+        {/* Order History — real data */}
         {activeTab === 'history' && (
           <div className={styles.orderList}>
-            {mockOrders.length === 0 ? (
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            {orders.length === 0 ? (
               <div className={styles.emptyState}>
                 <span className={styles.emptyIcon}>📦</span>
                 <p className={styles.emptyTitle}>No orders yet</p>
                 <p className={styles.emptySubtitle}>
                   Your completed purchases will appear here.
                 </p>
-                <a href="/browse" className={styles.browseButton}>
+                <a href="/" className={styles.browseButton}>
                   Browse Products
                 </a>
               </div>
             ) : (
-              mockOrders.map((order) => (
+              orders.map((order) => (
                 <div key={order.id} className={styles.orderCard}>
 
                   <button
@@ -168,7 +131,7 @@ export default function OrdersPage() {
                     onClick={() => handleToggle(order.id)}
                   >
                     <div className={styles.orderMeta}>
-                      <span className={styles.orderId}>{order.id}</span>
+                      <span className={styles.orderId}>Order #{order.id}</span>
                       <span className={styles.orderDate}>{order.date}</span>
                     </div>
                     <div className={styles.orderRight}>
@@ -184,6 +147,7 @@ export default function OrdersPage() {
                     </div>
                   </button>
 
+                  {/* Expanded items list */}
                   {expandedId === order.id && (
                     <div className={styles.itemList}>
                       {order.items.map((item) => (
@@ -195,9 +159,6 @@ export default function OrdersPage() {
                           </span>
                         </div>
                       ))}
-                      <button className={styles.reorderButton}>
-                        Reorder
-                      </button>
                     </div>
                   )}
 
