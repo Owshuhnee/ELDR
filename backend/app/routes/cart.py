@@ -56,10 +56,14 @@ def get_cart(user_id):
 
         result = []
         for item in items:
+            # Look up the product to get its name and price
+            product = db.query(Product).filter(Product.id == item.product_id).first()
             result.append({
                 'id':         item.id,
                 'product_id': item.product_id,
-                'quantity':   item.quantity
+                'quantity':   item.quantity,
+                'name':       product.title if product else 'Unknown Product',
+                'price':      float(product.price) if product else 0
             })
 
         return jsonify({'cart': result}), 200
@@ -115,9 +119,12 @@ def checkout():
             product = product_map[item.product_id]
             total  += product.price * item.quantity
 
+        recipient_id = data.get('recipient_id', None)
+
         new_order = Order(
             buyer_id     = user_id,
             total_amount = total,
+            recipient_id = recipient_id,
             status       = 'pending'
         )
         db.add(new_order)
