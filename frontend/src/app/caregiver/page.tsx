@@ -42,6 +42,10 @@ export default function FamilyPage() {
   // loading tracks whether we are still fetching data
   const [loading, setLoading] = useState(true)
 
+   // pending request
+  const [pending, setPending] = useState<Link[]>([])
+
+
   // useEffect runs once when the page loads
   // It reads the logged-in user from localStorage and fetches their links
   useEffect(() => {
@@ -54,6 +58,7 @@ export default function FamilyPage() {
     const user = JSON.parse(stored)
     setCurrentUser(user)
     fetchLinks()
+    fetchPending()
   }, [])
 
   // fetchLinks calls the backend and updates the links state
@@ -70,6 +75,18 @@ export default function FamilyPage() {
       setLoading(false)
     }
   }
+
+  const fetchPending = async () => {
+  try {
+    const res  = await fetch('http://localhost:5000/api/caregiver/pending', {
+      credentials: 'include'
+    })
+    const data = await res.json()
+    setPending(data.pending || [])
+  } catch {
+    // silently fail
+  }
+}
 
   // sendLinkRequest is called when a caregiver submits the form
   const sendLinkRequest = async () => {
@@ -119,6 +136,28 @@ export default function FamilyPage() {
     }
   }
 
+  const acceptLink = async (linkId: number) => {
+  setMessage('')
+  try {
+    const res  = await fetch('http://localhost:5000/api/caregiver/accept', {
+      method:      'POST',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ link_id: linkId })
+    })
+    const data = await res.json()
+    if (res.ok) {
+      setMessage('Link accepted')
+      fetchLinks()
+      fetchPending()
+    } else {
+      setMessage(data.error || 'Could not accept link')
+    }
+  } catch {
+    setMessage('Could not accept link')
+  }
+}
+
   if (loading) return <p className={styles.loading}>Loading...</p>
 
    return (
@@ -158,6 +197,35 @@ export default function FamilyPage() {
           ))
         )}
       </section>
+
+      {/* Pending requests — only show if there are any */}
+      {pending.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Pending Requests</h2>
+          {pending.map(link => (
+            <div key={link.link_id} className={styles.linkCard}>
+              <p className={styles.linkName}>{link.name}</p>
+              <p className={styles.linkEmail}>{link.email}</p>
+              <p className={styles.linkRole}>{link.relationship}</p>
+
+              {/* Elder sees Accept button, caregiver sees Awaiting label */}
+              {currentUser?.role === 'elder' ? (
+                <button
+                  className={styles.shopButton}
+                  onClick={() => acceptLink(link.link_id)}
+                >
+                  Accept
+                </button>
+              ) : (
+                <p className={styles.linkRole}>Awaiting approval</p>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Both elders and caregivers can send a link request */}
+      <section className={styles.section}></section>
 
       {/* Both elders and caregivers can send a link request */}
     <section className={styles.section}>

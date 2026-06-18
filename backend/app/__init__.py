@@ -44,3 +44,6 @@ app.register_blueprint(caregiver_bp)
 
 from app.routes.products import products_bp
 app.register_blueprint(products_bp)
+
+from app.routes.orders import orders_bp
+app.register_blueprint(orders_bp)

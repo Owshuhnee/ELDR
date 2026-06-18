@@ -29,24 +29,42 @@ export default function RegisterPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+        async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
         setMessage('')
         setError('')
 
+        // Basic validation
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match')
+            setLoading(false)
+            return
+        }
+
         try {
+            // Elders go through onboarding first
+            // Store their data temporarily and redirect
+            if (formData.role === 'elder') {
+                localStorage.setItem('pending_registration', JSON.stringify(formData))
+                router.push('/onboarding')
+                return
+            }
+
+            // Caregivers and sellers skip onboarding
+            // Register them directly and go to home
             const response = await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                method:      'POST',
+                credentials: 'include',
+                headers:     { 'Content-Type': 'application/json' },
+                body:        JSON.stringify(formData)
             })
 
             const data = await response.json()
 
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(data.user))
-                router.push('/onboarding')
+                router.push('/')
             } else {
                 setError(data.error)
             }
