@@ -9,15 +9,17 @@ from app.db import SessionLocal
 
 # ─── BLUEPRINT ────────────────────────────────────────────────────────────────
 # url_prefix means every route here automatically starts with /api/products
+# NOTE: Jove fixed route prefix (removed /api/products from decorator) and
+# switched db session from next(get_db()) to SessionLocal() — 18 June 2026
 products_bp = Blueprint('products', __name__, url_prefix='/api/products')
 
 
 # ─── EP-XX: Get All Products  ─────────────────────────────────────────────────
 # Returns the full product catalogue with category needs joined from product_needs
 
-@products_bp.route('/api/products', methods=['GET'])
+@products_bp.route('/', methods=['GET'])
 def get_products():
-    db = next(get_db())
+    db = SessionLocal()
     try:
 
         # Raw SQL used here to join product_needs in one query
