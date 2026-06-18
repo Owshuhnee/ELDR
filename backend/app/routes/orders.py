@@ -1,17 +1,20 @@
-# Orders routes
+# ORDERS ROUTES
 # Handles fetching order history for the logged-in user
 
+# ─── IMPORTS ──────────────────────────────────────────────────────────────────
 from flask import Blueprint, jsonify, session
 from app.db import SessionLocal
 from app.models import Order, OrderItem, Product
 
-# Blueprint for all order-related routes
+
+# ─── BLUEPRINT ────────────────────────────────────────────────────────────────
+# url_prefix means every route here automatically starts with /api/orders
 orders_bp = Blueprint('orders', __name__, url_prefix='/api/orders')
 
 
-# GET /api/orders/history
-# Returns all orders placed by the logged-in user
-# Includes the items inside each order
+# ─── EP-142: Get Order History  ────────────────────────────────────────────────
+# Returns all orders for the logged-in user, including items inside each order
+
 @orders_bp.route('/history', methods=['GET'])
 def get_order_history():
 

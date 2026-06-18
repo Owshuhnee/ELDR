@@ -1,17 +1,20 @@
-# Family & Caregiver routes
+# CAREGIVER ROUTES
 # Handles linking elders with family members and caregivers
 
+# ─── IMPORTS ──────────────────────────────────────────────────────────────────
 from flask import Blueprint, request, jsonify, session
 from app.db import SessionLocal
 from app.models import User, UserLink
 
-# Blueprint works like a mini app — groups related routes together
+
+# ─── BLUEPRINT ────────────────────────────────────────────────────────────────
 # url_prefix means every route here automatically starts with /api/caregiver
 caregiver_bp = Blueprint('caregiver', __name__, url_prefix='/api/caregiver')
 
 
-# POST /api/caregiver/accept
+# ─── EP-147: Accept Link Request  ─────────────────────────────────────────────
 # Elder accepts a pending link request using the link_id
+
 @caregiver_bp.route('/accept', methods=['POST'])
 def accept_link_request():
 
@@ -48,9 +51,10 @@ def accept_link_request():
         db.close()
 
 
-# POST /api/caregiver/link
+# ─── EP-148: Send Link Request  ───────────────────────────────────────────────
 # Either a caregiver sends a request to an elder
 # OR an elder sends a request to a caregiver
+
 @caregiver_bp.route('/link', methods=['POST'])
 def send_link_request():
 
@@ -118,9 +122,11 @@ def send_link_request():
         db.close()
 
 
-# GET /api/caregiver/links
+# ─── EP-149: Display Linked Caregiver/Elder  ──────────────────────────────────
 # Returns all accepted links for the logged-in user
 # Works for both elders (shows their caregivers) and caregivers (shows their elders)
+
+
 @caregiver_bp.route('/links', methods=['GET'])
 def get_links():
 
@@ -179,8 +185,10 @@ def get_links():
     finally:
         db.close()
 
-# DELETE /api/caregiver/unlink
+
+# ─── EP-150: Unlink Caregiver-Elder Account  ──────────────────────────────────
 # Either the elder or caregiver can remove an existing link
+
 @caregiver_bp.route('/unlink', methods=['DELETE'])
 def unlink():
 
@@ -222,8 +230,9 @@ def unlink():
         db.close()
 
 
-# GET /api/caregiver/pending
+# ─── EP-151: Display Pending Link Request  ────────────────────────────────────
 # Returns all pending link requests for the logged-in user
+
 @caregiver_bp.route('/pending', methods=['GET'])
 def get_pending():
 

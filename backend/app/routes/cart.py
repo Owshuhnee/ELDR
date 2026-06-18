@@ -1,17 +1,21 @@
-# CART Routes (add, view, remove, checkout)
+# CART ROUTES
+# Handles add, view, remove, and checkout for the shopping cart
 
-# IMPORTS
+# ─── IMPORTS ──────────────────────────────────────────────────────────────────
 from flask import Blueprint, request, jsonify
-from app.db import get_db
+from app.db import SessionLocal
 from app.models import CartItem, Order, OrderItem, Product
 
-# DEFINE BLUEPRINT
-cart_bp = Blueprint('cart', __name__)
+
+# ─── BLUEPRINT ────────────────────────────────────────────────────────────────
+# url_prefix means every route here automatically starts with /api/cart
+cart_bp = Blueprint('cart', __name__, url_prefix='/api/cart')
 
 
-# ─── EP-45: Add to cart ───────────────────────────────────────────
+# ─── EP-45: Add to Cart  ──────────────────────────────────────────────────────
+# Adds a product to the cart, or increases quantity if it already exists
 
-@cart_bp.route('/api/cart/add', methods=['POST'])
+@cart_bp.route('/add', methods=['POST'])
 def add_to_cart():
     data       = request.get_json()
     user_id    = data.get('user_id')
@@ -21,7 +25,7 @@ def add_to_cart():
     if not user_id or not product_id:
         return jsonify({'error': 'user_id and product_id are required'}), 400
 
-    db = next(get_db())
+    db = SessionLocal()
     try:
         existing = db.query(CartItem).filter_by(
             user_id=user_id,
@@ -46,11 +50,12 @@ def add_to_cart():
         return jsonify({'error': str(e)}), 500
 
 
-# ─── EP-46: View cart ─────────────────────────────────────────────
+# ─── EP-46: View Cart  ────────────────────────────────────────────────────────
+# Returns all cart items for a given user, with product name and price
 
-@cart_bp.route('/api/cart/<int:user_id>', methods=['GET'])
+@cart_bp.route('/<int:user_id>', methods=['GET'])
 def get_cart(user_id):
-    db = next(get_db())
+    db = SessionLocal()
     try:
         items = db.query(CartItem).filter_by(user_id=user_id).all()
 
@@ -73,11 +78,12 @@ def get_cart(user_id):
         return jsonify({'error': str(e)}), 500
 
 
-# ─── EP-45: Remove from cart ──────────────────────────────────────
+# ─── EP-153: Remove from Cart  ────────────────────────────────────────────────
+# Deletes a single cart item by its ID
 
-@cart_bp.route('/api/cart/remove/<int:item_id>', methods=['DELETE'])
+@cart_bp.route('/remove/<int:item_id>', methods=['DELETE'])
 def remove_from_cart(item_id):
-    db = next(get_db())
+    db = SessionLocal()
     try:
         item = db.query(CartItem).filter_by(id=item_id).first()
 
@@ -93,9 +99,10 @@ def remove_from_cart(item_id):
         return jsonify({'error': str(e)}), 500
 
 
-# ─── EP-47: Checkout ──────────────────────────────────────────────
+# ─── EP-47: Checkout  ─────────────────────────────────────────────────────────
+# Converts the cart into an order and clears the cart
 
-@cart_bp.route('/api/cart/checkout', methods=['POST'])
+@cart_bp.route('/checkout', methods=['POST'])
 def checkout():
     data    = request.get_json()
     user_id = data.get('user_id')
@@ -103,7 +110,7 @@ def checkout():
     if not user_id:
         return jsonify({'error': 'user_id is required'}), 400
 
-    db = next(get_db())
+    db = SessionLocal()
     try:
         cart_items = db.query(CartItem).filter_by(user_id=user_id).all()
 

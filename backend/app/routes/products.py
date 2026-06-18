@@ -1,20 +1,27 @@
-# PRODUCTS Routes (browse catalog)
+# PRODUCTS ROUTES
+# Handles browsing the product catalogue
 
-# IMPORTS
+# ─── IMPORTS ──────────────────────────────────────────────────────────────────
 from flask import Blueprint, jsonify
 from sqlalchemy import text
-from app.db import get_db
-
-# DEFINE BLUEPRINT
-products_bp = Blueprint('products', __name__)
+from app.db import SessionLocal
 
 
-# ─── EP-XX: Get all products ──────────────────────────────────────
+# ─── BLUEPRINT ────────────────────────────────────────────────────────────────
+# url_prefix means every route here automatically starts with /api/products
+products_bp = Blueprint('products', __name__, url_prefix='/api/products')
+
+
+# ─── EP-XX: Get All Products  ─────────────────────────────────────────────────
+# Returns the full product catalogue with category needs joined from product_needs
 
 @products_bp.route('/api/products', methods=['GET'])
 def get_products():
     db = next(get_db())
     try:
+
+        # Raw SQL used here to join product_needs in one query
+        # This could be refactored to ORM-style joins after submission
         rows = db.execute(text("""
             SELECT p.id, p.title, p.description, p.price,
                    p.stock_quantity, p.is_verified, p.image, n.need
