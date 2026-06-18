@@ -42,7 +42,7 @@ export default function Home() {
           price: item.price,
           description: item.description,
           needsTag: item.category.replace('_', ' '),
-          verified: item.is_verified,
+          verified: item.verified,
         }))
         setProducts(mapped)
         setLoading(false)
