@@ -1,4 +1,3 @@
-import Button from '@/components/ui/Button';
 import Link from 'next/link'
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 
@@ -16,78 +15,75 @@ type Props = {
 }
 
 export default function ProductCard({ product }: Props) {
-    return <article style={{
-        backgroundColor: 'var(--color-surface)',
-        borderRadius: '12px',
-        border: '1px solid var(--color-border)',
-        boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
-    }}>
-        <img src="https://placehold.co/400x220" alt={product.name} style={{
-                    width: '100%',
-                    display: 'block'
-
-        }}/>
-        
-        <div style={{
-            padding: '30px',
-            position: 'relative'
+    return (
+        <article style={{
+            backgroundColor: 'var(--color-surface)',
+            borderRadius: '12px',
+            border: '1px solid var(--color-border)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            overflow: 'hidden',
         }}>
-            <p style={{
-                fontSize: '18px',
-                fontWeight: '600',
-                color: 'var(--color-primary)'
-            }}>
-                <Link href={`/product/${product.id}`}>{product.name}</Link>
-                
-            </p>
-            
-            {product.verified && <VerifiedBadge />}
+            <img
+                src="https://placehold.co/400x220"
+                alt={product.name}
+                style={{ width: '100%', display: 'block' }}
+            />
 
-            <p style={{
-                fontSize: '24px',
-                fontWeight: 700,
-                color: 'var(--color-text)'
-            }}>
-                {`$${product.price.toFixed(2)}`}
-            </p>
-            <p style={{
-                marginBottom: '40px',
-            }}>
-                {product.description}
-            </p>
-            <p style={{
-                backgroundColor: 'var(--color-accent)',
-                color: 'white',
-                borderRadius: '999px',
-                padding: '0.25rem 0.75rem',
-                fontSize: '12px',
-                display: 'inline-block',
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-
-            }}>
-                {product.needsTag}
-            </p>
-            <div style={{
-                display: 'flex',
-                gap: '12px',
-            }}>
-                <div style={{
-                    flexGrow: 1
+            <div style={{ padding: '20px 24px 24px' }}>
+                <p style={{
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    color: 'var(--color-text)',
+                    marginBottom: '4px',
+                    textDecoration: 'none',
                 }}>
-                    <Button variant="primary">Add to Cart</Button>
-                </div>
-                <button aria-label="Add to wishlist" style={{
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '15px',
-                    padding: '15px',
-                    minHeight: '44px',
-                    minWidth: '44px',
-                }}>♡</button>
-                
+                    <Link href={`/product/${product.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {product.name}
+                    </Link>
+                </p>
+
+                {product.verified && (
+                    <div style={{ marginBottom: '8px' }}>
+                        <VerifiedBadge />
+                    </div>
+                )}
+
+                <p style={{
+                    color: 'var(--color-text-muted)',
+                    fontSize: '15px',
+                    marginBottom: '12px',
+                    lineHeight: 1.5,
+                }}>
+                    {product.description}
+                </p>
+
+                <p style={{
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    color: 'var(--color-text)',
+                    marginBottom: '20px',
+                }}>
+                    ${product.price.toFixed(2)}
+                </p>
+
+                <Link
+                    href={`/product/${product.id}`}
+                    style={{
+                        display: 'block',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        backgroundColor: 'var(--color-primary)',
+                        color: '#ffffff',
+                        borderRadius: '24px',
+                        padding: '14px 24px',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        minHeight: '44px',
+                    }}
+                >
+                    More Information
+                </Link>
             </div>
-        </div>
-        
-    </article>
+        </article>
+    )
 }
