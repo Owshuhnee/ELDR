@@ -1,108 +1,161 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from '@/components/ui/Button'
 import styles from './cart.module.css'
 
-const placeholderItems = [
-    { id: 1, product_id: 1, name: 'Ergonomic Grip Mug', price: 34.99, quantity: 1 },
-    { id: 2, product_id: 2, name: 'Large Button Remote', price: 24.99, quantity: 2 },
-    { id: 3, product_id: 3, name: 'Non-Slip Bath Mat', price: 19.99, quantity: 1 },
-]
+// Describes the shape of each cart item from the backend
+interface CartItem {
+  id:         number
+  product_id: number
+  name:       string
+  price:      number
+  quantity:   number
+}
 
 export default function CartPage() {
 
-    const [cartItems, setCartItems] = useState(placeholderItems)
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [loading, setLoading]     = useState(true)
+  const [error, setError]         = useState('')
 
-    function handleRemove(itemId: number) {
+  // Fetch cart items when the page loads
+  useEffect(() => {
+    fetchCart()
+  }, [])
+
+  const fetchCart = async () => {
+    try {
+      // Get the logged-in user from localStorage
+      const stored = localStorage.getItem('user')
+      if (!stored) {
+        window.location.href = '/login'
+        return
+      }
+      const user = JSON.parse(stored)
+
+      const res = await fetch(`http://localhost:5000/api/cart/${user.id}`, {
+        credentials: 'include'
+      })
+      const data = await res.json()
+
+      if (res.ok) {
+        setCartItems(data.cart || [])
+      } else {
+        setError(data.error || 'Could not load cart')
+      }
+    } catch {
+      setError('Could not connect to server')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleRemove = async (itemId: number) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/cart/remove/${itemId}`, {
+        method:      'DELETE',
+        credentials: 'include'
+      })
+      if (res.ok) {
+        // Remove the item from state so the UI updates immediately
         setCartItems(cartItems.filter(item => item.id !== itemId))
+      }
+    } catch {
+      setError('Could not remove item')
     }
+  }
 
-    function handleQuantityChange(itemId: number, change: number) {
-        setCartItems(cartItems.map(item =>
-            item.id === itemId
-                ? { ...item, quantity: Math.max(1, item.quantity + change) }
-                : item
-        ))
-    }
+  const handleQuantityChange = async (itemId: number, change: number) => {
+    // Update quantity in state immediately for responsive UI
+    setCartItems(cartItems.map(item =>
+      item.id === itemId
+        ? { ...item, quantity: Math.max(1, item.quantity + change) }
+        : item
+    ))
+  }
 
-    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-    return (
-        <main className={styles.page}>
+  if (loading) return <p style={{ padding: '24px' }}>Loading cart...</p>
 
-            <h1 className={styles.title}>Your Cart</h1>
+  return (
+    <main className={styles.page}>
 
-            {cartItems.length === 0 ? (
-                <p className={styles.empty}>Your cart is empty.</p>
-            ) : (
-                <div className={styles.itemList}>
+      <h1 className={styles.title}>Your Cart</h1>
 
-                    {cartItems.map(item => (
-                        <div key={item.id} className={styles.item}>
+      {error && <p style={{ color: 'red', padding: '12px' }}>{error}</p>}
 
-                            {/* Product image placeholder */}
-                            <div className={styles.itemImage} />
+      {cartItems.length === 0 ? (
+        <p className={styles.empty}>Your cart is empty.</p>
+      ) : (
+        <div className={styles.itemList}>
 
-                            {/* Product name and price */}
-                            <div className={styles.itemInfo}>
-                                <p className={styles.itemName}>{item.name}</p>
-                                <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
+          {cartItems.map(item => (
+            <div key={item.id} className={styles.item}>
 
-                                {/* Quantity controls */}
-                                <div className={styles.quantity}>
-                                    <button
-                                        className={styles.quantityBtn}
-                                        onClick={() => handleQuantityChange(item.id, -1)}
-                                    >
-                                        −
-                                    </button>
-                                    <span className={styles.quantityNumber}>{item.quantity}</span>
-                                    <button
-                                        className={styles.quantityBtn}
-                                        onClick={() => handleQuantityChange(item.id, 1)}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
+              {/* Product image placeholder */}
+              <div className={styles.itemImage} />
 
-                            {/* Item total and remove button */}
-                            <div>
-                                <p className={styles.itemTotal}>
-                                    ${(item.price * item.quantity).toFixed(2)}
-                                </p>
-                                <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
-                                    Remove
-                                </Button>
-                            </div>
+              {/* Product name and price */}
+              <div className={styles.itemInfo}>
+                <p className={styles.itemName}>{item.name}</p>
+                <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
 
-                        </div>
-                    ))}
-
-                    {/* Total row */}
-                    <div className={styles.footer}>
-                        <p className={styles.totalLabel}>Total</p>
-                        <p className={styles.totalAmount}>${total.toFixed(2)}</p>
-                    </div>
-
-                    {/* Action buttons */}
-                    <div className={styles.actions}>
-                        <Link href="/checkout" style={{ textDecoration: 'none' }}>
-                            <Button variant="primary" type="button">
-                                Proceed to Checkout
-                            </Button>
-                        </Link>
-                        <Link href="/" style={{ textDecoration: 'none' }}>
-                            <Button variant="secondary" type="button">
-                                Continue Shopping
-                            </Button>
-                        </Link>
-                    </div>
-
+                {/* Quantity controls */}
+                <div className={styles.quantity}>
+                  <button
+                    className={styles.quantityBtn}
+                    onClick={() => handleQuantityChange(item.id, -1)}
+                  >
+                    −
+                  </button>
+                  <span className={styles.quantityNumber}>{item.quantity}</span>
+                  <button
+                    className={styles.quantityBtn}
+                    onClick={() => handleQuantityChange(item.id, 1)}
+                  >
+                    +
+                  </button>
                 </div>
-            )}
-        </main>
-    )
+              </div>
+
+              {/* Item total and remove button */}
+              <div>
+                <p className={styles.itemTotal}>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </p>
+                <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
+                  Remove
+                </Button>
+              </div>
+
+            </div>
+          ))}
+
+          {/* Total row */}
+          <div className={styles.footer}>
+            <p className={styles.totalLabel}>Total</p>
+            <p className={styles.totalAmount}>${total.toFixed(2)}</p>
+          </div>
+
+          {/* Action buttons */}
+          <div className={styles.actions}>
+            <Link href="/checkout" style={{ textDecoration: 'none' }}>
+              <Button variant="primary" type="button">
+                Proceed to Checkout
+              </Button>
+            </Link>
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Button variant="secondary" type="button">
+                Continue Shopping
+              </Button>
+            </Link>
+          </div>
+
+        </div>
+      )}
+    </main>
+  )
 }

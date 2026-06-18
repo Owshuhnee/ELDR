@@ -15,6 +15,11 @@ class User(Base):
     password_hash       = Column(String(255), nullable=False)
     email               = Column(String(255), unique=True, nullable=False)
     phone_number        = Column(String(20))
+    
+    # Onboarding preference columns
+    needs_mobility      = Column(Boolean, default=False)
+    needs_vision        = Column(Boolean, default=False)
+    onboarding_complete = Column(Boolean, default=False)
     created_at          = Column(DateTime(timezone=True), server_default=func.now())
 
 
@@ -45,6 +50,7 @@ class Order(Base):
 
     id                  = Column(Integer, primary_key=True)
     buyer_id            = Column(Integer, ForeignKey('users.id'), nullable=False)
+    recipient_id        = Column(Integer, ForeignKey('users.id'), nullable=True)        # recipient_id is set when a caregiver shops for an elder - nullable means optional
     total_amount        = Column(Numeric(10, 2), nullable=False)
     status              = Column(String(50), nullable=False, default='pending')
     created_at          = Column(DateTime(timezone=True), server_default=func.now())
