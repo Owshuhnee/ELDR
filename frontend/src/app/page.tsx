@@ -4,6 +4,7 @@ import ProductCard from '@/components/ui/ProductCard';
 import { useState, useEffect } from 'react';
 import { useAccessibility } from '../context/AccessibilityContext'
 import type { Product } from '@/data/products'
+import { filterProducts } from '@/lib/filterProducts'
 
 const filterOptions = [
   { label: 'Mobility',    value: 'mobility' },
@@ -53,12 +54,8 @@ export default function Home() {
       })
   }, [])
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase())
-    if (selectedCategory === 'all') return matchesSearch
-    if (selectedCategory === 'verified') return matchesSearch && product.verified
-    return matchesSearch && product.needsTag === selectedCategory
-  })
+  const filteredProducts = filterProducts(products, searchText, selectedCategory)
+
 
   if (loading) {
     return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading products…</p>
