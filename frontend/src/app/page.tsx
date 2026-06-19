@@ -41,6 +41,7 @@ export default function Home() {
           id: item.id,
           name: item.title,
           price: item.price,
+          image: item.image,
           description: item.description,
           needsTag: item.category.replace('_', ' '),
           verified: item.verified,
