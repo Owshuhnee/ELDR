@@ -2,9 +2,9 @@
 
 import ProductCard from '@/components/ui/ProductCard';
 import { useState, useEffect } from 'react';
-import type { Product } from '@/data/products'
-import { filterProducts } from '@/lib/filterProducts'
-import { useAccessibility } from '../context/AccessibilityContext'
+import { useAccessibility } from '../context/AccessibilityContext';
+import type { Product } from '@/data/products';
+import { filterProducts } from '@/lib/filterProducts';
 
 const filterOptions = [
   { label: 'Mobility',    value: 'mobility' },
@@ -41,10 +41,10 @@ export default function Home() {
           id: item.id,
           name: item.title,
           price: item.price,
+          image: item.image,
           description: item.description,
           needsTag: item.category.replace('_', ' '),
           verified: item.verified,
-          image: item.image,
         }))
         setProducts(mapped)
         setLoading(false)
@@ -57,8 +57,13 @@ export default function Home() {
 
   const filteredProducts = filterProducts(products, searchText, selectedCategory)
 
-  if (loading) return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading products…</p>
-  if (error) return <p style={{ padding: '2rem', fontSize: '18px', color: 'red' }}>{error}</p>
+  if (loading) {
+    return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading products…</p>
+  }
+
+  if (error) {
+    return <p style={{ padding: '2rem', fontSize: '18px', color: 'red' }}>{error}</p>
+  }
 
   const activeLabel = filterOptions.find(f => f.value === selectedCategory)?.label ?? null
 
