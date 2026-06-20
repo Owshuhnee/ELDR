@@ -1,9 +1,10 @@
 'use client';
 
 import ProductCard from '@/components/ui/ProductCard';
-import { useState } from 'react';
-import { products } from '@/data/products'
+import { useState, useEffect } from 'react';
 import { useAccessibility } from '../context/AccessibilityContext'
+import type { Product } from '@/data/products'
+import { filterProducts } from '@/lib/filterProducts'
 
 const filterOptions = [
   { label: 'Mobility',    value: 'mobility' },
@@ -24,17 +25,46 @@ const FilterIcon = () => (
 )
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchText, setSearchText] = useState('')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const { isAccessibilityMode } = useAccessibility()
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchText.toLowerCase())
-    if (selectedCategory === 'all') return matchesSearch
-    if (selectedCategory === 'verified') return matchesSearch && product.verified
-    return matchesSearch && product.needsTag === selectedCategory
-  })
+  useEffect(() => {
+    fetch('http://localhost:5000/api/products')
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.products.map((item: any) => ({
+          id: item.id,
+          name: item.title,
+          price: item.price,
+          image: item.image,
+          description: item.description,
+          needsTag: item.category.replace('_', ' '),
+          verified: item.verified,
+        }))
+        setProducts(mapped)
+        setLoading(false)
+      })
+      .catch(() => {
+        setError('Failed to load products')
+        setLoading(false)
+      })
+  }, [])
+
+  const filteredProducts = filterProducts(products, searchText, selectedCategory)
+
+
+  if (loading) {
+    return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading products…</p>
+  }
+
+  if (error) {
+    return <p style={{ padding: '2rem', fontSize: '18px', color: 'red' }}>{error}</p>
+  }
 
   const activeLabel = filterOptions.find(f => f.value === selectedCategory)?.label ?? null
 
