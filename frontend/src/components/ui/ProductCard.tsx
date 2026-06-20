@@ -8,6 +8,7 @@ type Product = {
     description: string;
     needsTag: string;
     verified: boolean;
+    image?: string;
 }
 
 type Props = {
@@ -24,9 +25,9 @@ export default function ProductCard({ product }: Props) {
             overflow: 'hidden',
         }}>
             <img
-                src="https://placehold.co/400x220"
+                src={product.image ?? 'https://placehold.co/400x220'}
                 alt={product.name}
-                style={{ width: '100%', display: 'block' }}
+                style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
             />
 
             <div style={{ padding: '20px 24px 24px' }}>

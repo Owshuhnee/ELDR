@@ -5,6 +5,7 @@ export type Product = {
   description: string
   needsTag: string
   verified: boolean
+  image?: string
 }
 
 export const products: Product[] = [
