@@ -96,3 +96,16 @@ class UserLink(Base):
     relationship = Column(String(50), nullable=False, default='family')
     status       = Column(String(50), nullable=False, default='pending')
     created_at   = Column(DateTime(timezone=True), server_default=func.now())
+
+
+# ─── WISHLIST ────────────────────────────────────────────────────────────────
+# ---
+# ---
+class WishlistItem(Base):
+    __tablename__ = "wishlists"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
