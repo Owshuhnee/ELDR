@@ -74,3 +74,6 @@ app.register_blueprint(products_bp)
 
 from app.routes.orders import orders_bp
 app.register_blueprint(orders_bp)
+
+from app.routes.wishlist import wishlist_bp
+app.register_blueprint(wishlist_bp)

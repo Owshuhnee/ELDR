@@ -2,9 +2,9 @@
 
 import ProductCard from '@/components/ui/ProductCard';
 import { useState, useEffect } from 'react';
-import { useAccessibility } from '../context/AccessibilityContext'
-import type { Product } from '@/data/products'
-import { filterProducts } from '@/lib/filterProducts'
+import { useAccessibility } from '../context/AccessibilityContext';
+import type { Product } from '@/data/products';
+import { filterProducts } from '@/lib/filterProducts';
 
 const filterOptions = [
   { label: 'Mobility',    value: 'mobility' },
@@ -56,7 +56,6 @@ export default function Home() {
   }, [])
 
   const filteredProducts = filterProducts(products, searchText, selectedCategory)
-
 
   if (loading) {
     return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading products…</p>

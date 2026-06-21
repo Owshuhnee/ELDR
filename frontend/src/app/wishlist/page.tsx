@@ -1,35 +1,56 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './wishlist.module.css'
-import Button from '@/components/ui/Button'
 
 interface WishlistItem {
   id: number
+  product_id: number
   name: string
   price: number
   image: string
-  category: string
 }
 
-const mockWishlist: WishlistItem[] = [
-  { id: 1, name: 'Ergonomic Grip Mug',  price: 24.99, image: '', category: 'Daily Living' },
-  { id: 2, name: 'Large Button Remote', price: 39.99, image: '', category: 'Vision' },
-  { id: 3, name: 'Non-Slip Bath Mat',   price: 34.99, image: '', category: 'Mobility' },
-]
-
 export default function WishlistPage() {
+  const [items, setItems] = useState<WishlistItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // useState with an array this time.
-  // WishlistItem[] means "an array of WishlistItem objects"
-  const [items, setItems] = useState<WishlistItem[]>(mockWishlist)
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    if (!user.id) {
+      setLoading(false)
+      return
+    }
+    fetch(`http://localhost:5000/api/wishlist/${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+        setItems(data.wishlist)
+        setLoading(false)
+      })
+      .catch(() => {
+        setError('Failed to load wishlist')
+        setLoading(false)
+      })
+  }, [])
 
-  // Removes an item by filtering out the one whose id matches.
-  // .filter() returns a new array containing only items where the condition is true.
-  // Think of it as: "keep everything EXCEPT the item I just tapped the heart on"
-  function handleRemove(id: number) {
+
+
+
+  async function handleRemove(id: number, product_id: number) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}')
+      await fetch('http://localhost:5000/api/wishlist/remove', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id, product_id})
+    })
+    
     setItems(items.filter((item) => item.id !== id))
+    localStorage.setItem(`wishlist-${product_id}`, 'false')
   }
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>{error}</p>
 
   return (
     <div className={styles.page}>
@@ -37,10 +58,6 @@ export default function WishlistPage() {
 
         <h1 className={styles.pageTitle}>My Wishlist</h1>
 
-        {/* ── Empty state ── */}
-        {/* If items.length is 0 (empty array), render the empty state */}
-        {/* Otherwise render the item list */}
-        {/* This is a ternary: condition ? "if true" : "if false" */}
         {items.length === 0 ? (
           <div className={styles.emptyState}>
             <span className={styles.emptyIcon}>♡</span>
@@ -48,7 +65,7 @@ export default function WishlistPage() {
             <p className={styles.emptySubtitle}>
               Browse our products and tap the heart icon to save items here.
             </p>
-            <a href="/browse" className={styles.browseButton}>
+            <a href="/" className={styles.browseButton}>
               Browse Products
             </a>
           </div>
@@ -57,28 +74,23 @@ export default function WishlistPage() {
             {items.map((item) => (
               <div key={item.id} className={styles.card}>
 
-                {/* Left side — tapping navigates to product detail */}
-                <a href={`/products/${item.id}`} className={styles.cardLink}>
-
-                  {/* Image placeholder — replaced with <img> when backend is wired */}
-                  <div className={styles.imagePlaceholder} />
-
+                <a href={`/product/${item.product_id}`} className={styles.cardLink}>
+                  <img
+                    src={item.image ?? 'https://placehold.co/80x80'}
+                    alt={item.name}
+                    className={styles.imagePlaceholder}
+                  />
                   <div className={styles.cardInfo}>
-                    <span className={styles.cardCategory}>{item.category}</span>
                     <p className={styles.cardName}>{item.name}</p>
                     <p className={styles.cardPrice}>${item.price.toFixed(2)}</p>
                   </div>
-
                 </a>
 
-                {/* Heart button — tapping removes from wishlist */}
-                {/* onClick passes the item's id to handleRemove */}
                 <button
                   className={styles.heartButton}
-                  onClick={() => handleRemove(item.id)}
+                  onClick={() => handleRemove(item.id, item.product_id)}
                   aria-label={`Remove ${item.name} from wishlist`}
                 >
-                  {/* ♥ is a filled heart character */}
                   ♥
                 </button>
 
