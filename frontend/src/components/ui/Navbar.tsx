@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import AccessibilityToggle from './AccessibilityToggle'
+import { useState, useEffect } from 'react'
+
 
 const HomeIcon = () => (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -36,6 +38,13 @@ const AccountIcon = () => (
 
 export default function Navbar() {
     const pathname = usePathname()
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        setIsAdmin(user.role === 'admin')
+    }, [])
+
 
     if (pathname === '/login' || pathname === '/register') return null
 
@@ -75,6 +84,13 @@ export default function Navbar() {
                         textDecoration: 'none',
                         fontWeight: 500,
                     }}>Account</Link>
+                    {isAdmin && (
+                        <Link href="/admin" style={{
+                            color: pathname === "/admin" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
+                            textDecoration: 'none',
+                            fontWeight: 500,
+                        }}>Admin</Link>
+                    )}
                     <AccessibilityToggle />
                 </div>
             </nav>
