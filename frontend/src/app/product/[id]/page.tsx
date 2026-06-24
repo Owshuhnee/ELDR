@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import VerifiedBadge from '@/components/ui/VerifiedBadge'
 import type { Product } from '@/data/products'
+import SpeakButton from '@/components/ui/SpeakButton'
 
 export default function ProductPage() {
     const params = useParams()
@@ -68,9 +69,13 @@ export default function ProductPage() {
                 />
             )}
 
-            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--color-text)', marginTop: '1.5rem' }}>
-                {product.name}
-            </h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--color-text)', margin: 0 }}>
+                    {product.name}
+                </h1>
+                <SpeakButton text={product.name} label="product name" />
+            </div>
+
 
             {product.verified && <div style={{ marginTop: '8px' }}><VerifiedBadge /></div>}
 
@@ -78,9 +83,13 @@ export default function ProductPage() {
                 ${product.price.toFixed(2)}
             </p>
 
-            <p style={{ fontSize: '18px', color: 'var(--color-text-muted)', marginTop: '12px', lineHeight: 1.6 }}>
-                {product.description}
-            </p>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginTop: '12px' }}>
+                <p style={{ fontSize: '18px', color: 'var(--color-text-muted)', lineHeight: 1.6, margin: 0 }}>
+                    {product.description}
+                </p>
+                <SpeakButton text={product.description} label="product description" />
+            </div>
+
 
             <button
                 onClick={handleAddToCart}
