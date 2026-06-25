@@ -2,7 +2,8 @@
 # Handles browsing the product catalogue
 
 # ─── IMPORTS ──────────────────────────────────────────────────────────────────
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from app.models import Product, ProductNeed
 from sqlalchemy import text
 from app.db import SessionLocal
 
@@ -50,3 +51,53 @@ def get_products():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+
+# ─── EP-125/126: Create a Product  ────────────────────────────────────────────
+# Sellers POST a new listing; it saves unverified until an admin approves it
+@products_bp.route('/', methods=['POST'])
+def create_product():
+    db = SessionLocal()
+    try:
+        data = request.get_json() or {}
+
+        # Validate the fields the table cannot be NULL without
+        title = data.get('title')
+        price = data.get('price')
+        if not title or price is None:
+            return jsonify({'error': 'Title and price are required'}), 400
+
+        # New listings always start unverified — EP-27 admin panel approves them
+        product = Product(
+            seller_id      = data.get('seller_id'),
+            title          = title,
+            description    = data.get('description'),
+            price          = price,
+            stock_quantity = data.get('stock', 0),
+            image          = data.get('image'),
+            is_verified    = False,
+        )
+
+        db.add(product)
+        db.flush()              # sends INSERT now so Postgres assigns product.id
+
+        # Attach the category as a product_needs row, if one was provided
+        category = data.get('category')
+        if category:
+            db.add(ProductNeed(product_id=product.id, need=category))
+
+        db.commit()             # product + need committed together, one transaction
+
+        return jsonify({
+            'id':       product.id,
+            'title':    product.title,
+            'price':    float(product.price),
+            'verified': product.is_verified,
+            'category': category,
+        }), 201
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db.close()
