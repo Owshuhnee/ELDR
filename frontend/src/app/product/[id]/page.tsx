@@ -6,6 +6,7 @@ import Link from 'next/link'
 import VerifiedBadge from '@/components/ui/VerifiedBadge'
 import type { Product } from '@/data/products'
 import SpeakButton from '@/components/ui/SpeakButton'
+import ReviewsSection from '@/components/ui/ReviewsSection'
 
 export default function ProductPage() {
     const params = useParams()
@@ -110,6 +111,9 @@ export default function ProductPage() {
             >
                 {added ? 'Added to Cart!' : 'Add to Cart'}
             </button>
+
+            <ReviewsSection productId={id} />
+            
         </div>
     )
 }
