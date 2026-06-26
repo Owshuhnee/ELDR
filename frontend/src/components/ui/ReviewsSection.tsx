@@ -38,9 +38,19 @@ function Stars({ rating }: { rating: number }) {
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function ReviewsSection({ productId }: Props) {
 
-    const [reviews, setReviews]   = useState<Review[]>([])
-    const [loading, setLoading]   = useState(true)
-    const [error, setError]       = useState<string | null>(null)
+    const [reviews, setReviews]       = useState<Review[]>([])
+    const [loading, setLoading]       = useState(true)
+    const [error, setError]           = useState<string | null>(null)
+    const [rating, setRating]         = useState<number>(0)
+    const [comment, setComment]       = useState<string>('')
+    const [submitting, setSubmitting] = useState(false)
+    const [submitError, setSubmitError] = useState<string | null>(null)
+    const [submitSuccess, setSubmitSuccess] = useState(false)
+    const [refreshCount, setRefreshCount] = useState(0)
+
+    // Read the user from localStorage — same pattern as the rest of the frontend
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('user') : null
+    const currentUser = stored ? JSON.parse(stored) : null
 
     useEffect(() => {
         // Re-runs if productId changes — so navigating between product pages
@@ -72,8 +82,49 @@ export default function ReviewsSection({ productId }: Props) {
         }
 
         fetchReviews()
-    }, [productId])
+    }, [productId, refreshCount])
 
+        async function handleSubmitReview() {
+        if (rating === 0) {
+            setSubmitError('Please select a star rating.')
+            return
+        }
+        setSubmitting(true)
+        setSubmitError(null)
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/reviews/${productId}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rating, comment })
+            })
+            const data = await res.json()
+
+            if (res.status === 409) {
+                // 409 means duplicate — user already reviewed this product
+                setSubmitError('You have already reviewed this product.')
+                return
+            }
+            if (!res.ok) {
+                setSubmitError(data.error || 'Could not submit review.')
+                return
+            }
+
+            // Success — reset form and refresh the reviews list
+            setSubmitSuccess(true)
+            setRating(0)
+            setComment('')
+            // Trigger a re-fetch by calling fetchReviews again
+            // We do this by toggling a refresh counter
+            setRefreshCount(c => c + 1)
+
+        } catch {
+            setSubmitError('Could not connect to server.')
+        } finally {
+            setSubmitting(false)
+        }
+    }
 
     // ─── RENDER ───────────────────────────────────────────────────────────────
     return (
@@ -142,6 +193,90 @@ export default function ReviewsSection({ productId }: Props) {
                         comment is not null. A review with no comment just shows stars */}
                 </div>
             ))}
+
+            {/* Review form */}
+            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #E8E8E8' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem' }}>
+                    Leave a Review
+                </h3>
+
+                {!currentUser ? (
+                    <p style={{ fontSize: '16px', color: 'var(--color-text-muted)' }}>
+                        <a href="/login" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>
+                            Log in
+                        </a>{' '}to leave a review.
+                    </p>
+                ) : submitSuccess ? (
+                    <p style={{ fontSize: '16px', color: '#4A7C59', fontWeight: 600 }}>
+                        ✓ Review submitted. Thank you!
+                    </p>
+                ) : (
+                    <>
+                        <div style={{ display: 'flex', gap: '8px', marginBottom: '1rem' }}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    onClick={() => setRating(star)}
+                                    style={{
+                                        fontSize: '28px',
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        color: star <= rating ? '#4A7C59' : '#CCCCCC',
+                                        padding: '0',
+                                        lineHeight: 1,
+                                    }}
+                                >
+                                    ★
+                                </button>
+                            ))}
+                        </div>
+
+                        <textarea
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder="Share your experience with this product (optional)"
+                            rows={4}
+                            style={{
+                                width: '100%',
+                                fontSize: '16px',
+                                padding: '0.75rem',
+                                borderRadius: '8px',
+                                border: '1px solid #CCCCCC',
+                                fontFamily: 'inherit',
+                                resize: 'vertical',
+                                boxSizing: 'border-box' as const,
+                                marginBottom: '0.75rem',
+                            }}
+                        />
+
+                        {submitError && (
+                            <p style={{ fontSize: '15px', color: '#CC0000', marginBottom: '0.5rem' }}>
+                                {submitError}
+                            </p>
+                        )}
+
+                        <button
+                            onClick={handleSubmitReview}
+                            disabled={submitting}
+                            style={{
+                                backgroundColor: 'var(--color-primary)',
+                                color: '#ffffff',
+                                border: 'none',
+                                borderRadius: '24px',
+                                padding: '12px 32px',
+                                fontSize: '16px',
+                                fontWeight: 600,
+                                cursor: submitting ? 'not-allowed' : 'pointer',
+                                opacity: submitting ? 0.7 : 1,
+                                minHeight: '48px',
+                            }}
+                        >
+                            {submitting ? 'Submitting...' : 'Submit Review'}
+                        </button>
+                    </>
+                )}
+            </div>
         </div>
     )
 }

@@ -113,7 +113,6 @@ export default function ProductPage() {
             </button>
 
             <ReviewsSection productId={id} />
-            
         </div>
     )
 }
