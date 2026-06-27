@@ -109,3 +109,15 @@ class WishlistItem(Base):
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+
+# ─── PRODUCT NEED ─────────────────────────────────────────────────────────────
+# One row per product = its accessibility category (mobility, vision, etc.)
+# The GET endpoint joins this in as 'category'; we insert into it on create
+class ProductNeed(Base):
+    __tablename__ = "product_needs"
+
+    product_id = Column(Integer, ForeignKey('products.id'), primary_key=True)
+    need       = Column(String(100), primary_key=True)
+
+
+
