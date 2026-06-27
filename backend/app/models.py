@@ -111,8 +111,6 @@ class WishlistItem(Base):
 
 # ─── REVIEW ───────────────────────────────────────────────────────────────────
 # Stores elderly-specific reviews left on product pages
-# user_id is nullable — ON DELETE SET NULL means reviews survive account deletion
-# rating is constrained to 1–5 by the database CHECK constraint
 class Review(Base):
     __tablename__ = "reviews"
 
@@ -122,3 +120,15 @@ class Review(Base):
     rating     = Column(Integer, nullable=False)
     comment    = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+# ─── PRODUCT NEED ─────────────────────────────────────────────────────────────
+# One row per product = its accessibility category (mobility, vision, etc.)
+# The GET endpoint joins this in as 'category'; we insert into it on create
+class ProductNeed(Base):
+    __tablename__ = "product_needs"
+
+    product_id = Column(Integer, ForeignKey('products.id'), primary_key=True)
+    need       = Column(String(100), primary_key=True)
+
+
+
