@@ -31,6 +31,3 @@ def verify_product(id):
     
     finally:
         db.close()
-
-    finally:
-        db.close()
