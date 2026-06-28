@@ -83,4 +83,3 @@ app.register_blueprint(admin_bp)
 
 from app.routes.reviews import reviews_bp
 app.register_blueprint(reviews_bp)
-

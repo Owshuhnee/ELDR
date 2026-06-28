@@ -111,6 +111,8 @@ class WishlistItem(Base):
 
 # ─── REVIEW ───────────────────────────────────────────────────────────────────
 # Stores elderly-specific reviews left on product pages
+# user_id is nullable — ON DELETE SET NULL means reviews survive account deletion
+# rating is constrained to 1–5 by the database CHECK constraint
 class Review(Base):
     __tablename__ = "reviews"
 
