@@ -2,7 +2,7 @@
 # Creates the Flask app, registers extensions, and wires up all blueprints
 
 # ─── IMPORTS ──────────────────────────────────────────────────────────────────
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from flask_bcrypt import Bcrypt
