@@ -8,13 +8,10 @@ from app.models import CartItem, Order, OrderItem, Product
 
 
 # ─── BLUEPRINT ────────────────────────────────────────────────────────────────
-# url_prefix means every route here automatically starts with /api/cart
 cart_bp = Blueprint('cart', __name__, url_prefix='/api/cart')
 
 
 # ─── EP-45: Add to Cart  ──────────────────────────────────────────────────────
-# Adds a product to the cart, or increases quantity if it already exists
-
 @cart_bp.route('/add', methods=['POST'])
 def add_to_cart():
     data       = request.get_json()
@@ -52,10 +49,11 @@ def add_to_cart():
     finally:
         db.close()
 
+    finally:
+        db.close()
+
 
 # ─── EP-46: View Cart  ────────────────────────────────────────────────────────
-# Returns all cart items for a given user, with product name and price
-
 @cart_bp.route('/<int:user_id>', methods=['GET'])
 def get_cart(user_id):
     db = SessionLocal()
@@ -64,7 +62,6 @@ def get_cart(user_id):
 
         result = []
         for item in items:
-            # Look up the product to get its name and price
             product = db.query(Product).filter(Product.id == item.product_id).first()
             result.append({
                 'id':         item.id,
@@ -83,10 +80,11 @@ def get_cart(user_id):
     finally:
         db.close()
 
+    finally:
+        db.close()
+
 
 # ─── EP-153: Remove from Cart  ────────────────────────────────────────────────
-# Deletes a single cart item by its ID
-
 @cart_bp.route('/remove/<int:item_id>', methods=['DELETE'])
 def remove_from_cart(item_id):
     db = SessionLocal()
@@ -107,10 +105,11 @@ def remove_from_cart(item_id):
     finally:
         db.close()
 
+    finally:
+        db.close()
+
 
 # ─── EP-47: Checkout  ─────────────────────────────────────────────────────────
-# Converts the cart into an order and clears the cart
-
 @cart_bp.route('/checkout', methods=['POST'])
 def checkout():
     data    = request.get_json()
