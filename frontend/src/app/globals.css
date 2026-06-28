@@ -58,6 +58,17 @@
     font-size: 20px;
 }
 
+/* Visible keyboard focus for the accessibility toggle.
+   Scoped via [aria-pressed] so it targets only the real toggle, not the
+   Button components that borrow the .toggle-btn class in a11y mode.
+   Uses --color-nav-text so the ring contrasts on both the dark default
+   nav and the white a11y-on nav. */
+.toggle-btn[aria-pressed]:focus-visible {
+    outline: 2px solid var(--color-nav-text);
+    outline-offset: 3px;
+    border-radius: 999px;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
