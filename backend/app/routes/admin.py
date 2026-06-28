@@ -28,6 +28,9 @@ def verify_product(id):
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
 
     finally:
         db.close()

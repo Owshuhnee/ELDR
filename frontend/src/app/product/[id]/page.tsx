@@ -49,7 +49,6 @@ export default function ProductPage() {
             body: JSON.stringify({ user_id: userId, product_id: product!.id, quantity: 1 }),
         })
         setAdded(true)
-        setTimeout(() => setAdded(false), 2000)
     }
 
     if (loading) return <p style={{ padding: '2rem', fontSize: '18px' }}>Loading…</p>
@@ -103,6 +102,7 @@ export default function ProductPage() {
                     padding: '14px 24px',
                     fontSize: '18px',
                     fontWeight: 600,
+                    border: '2px solid var(--color-primary)',
                     border: 'none',
                     cursor: 'pointer',
                     minHeight: '56px',
@@ -110,6 +110,30 @@ export default function ProductPage() {
             >
                 {added ? 'Added to Cart!' : 'Add to Cart'}
             </button>
+                {added && (
+                    <Link
+                        href="/cart"
+                        style={{
+                            marginTop: '12px',
+                            display: 'block',
+                            width: '100%',
+                            backgroundColor: 'transparent',
+                            color: 'var(--color-primary)',
+                            borderRadius: '24px',
+                            padding: '14px 24px',
+                            fontSize: '18px',
+                            fontWeight: 600,
+                            border: '2px solid var(--color-primary)',
+                            cursor: 'pointer',
+                            minHeight: '56px',
+                            textAlign: 'center',
+                            textDecoration: 'none',
+                            boxSizing: 'border-box',
+                        }}
+                    >
+                        View Cart
+                    </Link>
+                )}
         </div>
     )
 }

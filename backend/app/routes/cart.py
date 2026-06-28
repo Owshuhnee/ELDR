@@ -45,6 +45,9 @@ def add_to_cart():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
 
     finally:
         db.close()
@@ -73,6 +76,9 @@ def get_cart(user_id):
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
 
     finally:
         db.close()
@@ -95,6 +101,9 @@ def remove_from_cart(item_id):
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
 
     finally:
         db.close()
@@ -160,6 +169,6 @@ def checkout():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
-
+    
     finally:
         db.close()
