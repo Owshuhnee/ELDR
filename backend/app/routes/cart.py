@@ -49,9 +49,6 @@ def add_to_cart():
     finally:
         db.close()
 
-    finally:
-        db.close()
-
 
 # ─── EP-46: View Cart  ────────────────────────────────────────────────────────
 @cart_bp.route('/<int:user_id>', methods=['GET'])
@@ -80,9 +77,6 @@ def get_cart(user_id):
     finally:
         db.close()
 
-    finally:
-        db.close()
-
 
 # ─── EP-153: Remove from Cart  ────────────────────────────────────────────────
 @cart_bp.route('/remove/<int:item_id>', methods=['DELETE'])
@@ -102,9 +96,6 @@ def remove_from_cart(item_id):
         db.rollback()
         return jsonify({'error': str(e)}), 500
     
-    finally:
-        db.close()
-
     finally:
         db.close()
 

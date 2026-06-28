@@ -32,9 +32,6 @@ def get_wishlist(user_id):
     finally:
         db.close()
 
-    finally:
-        db.close()
-
 
 @wishlist_bp.route('/add', methods=['POST'])
 def add_wishlist():
@@ -59,9 +56,6 @@ def add_wishlist():
         db.rollback()
         return jsonify({'error': str(e)}), 500
     
-    finally:
-        db.close()
-
     finally:
         db.close()
 
