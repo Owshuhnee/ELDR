@@ -65,7 +65,7 @@ export default function ProductCard({ product }: Props) {
 
             
             <img
-                src={product.image ?? 'https://placehold.co/400x220'}
+                src={product.image || 'https://placehold.co/400x220'}
                 alt={product.name}
                 style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
             />

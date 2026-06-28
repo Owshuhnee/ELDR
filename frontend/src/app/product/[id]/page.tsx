@@ -104,7 +104,6 @@ export default function ProductPage() {
                     fontSize: '18px',
                     fontWeight: 600,
                     border: '2px solid var(--color-primary)',
-                    border: 'none',
                     cursor: 'pointer',
                     minHeight: '56px',
                 }}
