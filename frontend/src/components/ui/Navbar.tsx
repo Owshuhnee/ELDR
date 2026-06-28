@@ -39,10 +39,12 @@ const AccountIcon = () => (
 export default function Navbar() {
     const pathname = usePathname()
     const [isAdmin, setIsAdmin] = useState(false)
+    const [isSeller, setIsSeller] = useState(false)
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user') || '{}')
         setIsAdmin(user.role === 'admin')
+        setIsSeller(user.role === 'seller')
     }, [])
 
 
@@ -84,6 +86,13 @@ export default function Navbar() {
                         textDecoration: 'none',
                         fontWeight: 500,
                     }}>Account</Link>
+                    {isSeller && (
+                        <Link href="/sell" style={{
+                            color: pathname === "/sell" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
+                            textDecoration: 'none',
+                            fontWeight: 500,
+                        }}>Sell</Link>
+                    )}
                     {isAdmin && (
                         <Link href="/admin" style={{
                             color: pathname === "/admin" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',

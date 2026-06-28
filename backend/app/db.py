@@ -9,12 +9,12 @@ import os
 
 
 # ─── ENGINE ───────────────────────────────────────────────────────────────────
-# DATABASE_URL is loaded from the .env file — never hardcode credentials here
+# DATABASE_URL is loaded from the .env file - never hardcode credentials here
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # create_engine sets up the connection to the Neon PostgreSQL database
-# pool_pre_ping=True tests the connection before using it — prevents stale connections
-# pool_recycle=300 replaces connections older than 5 minutes — keeps Neon happy
+# pool_pre_ping=True tests the connection before using it - prevents stale connections
+# pool_recycle=300 replaces connections older than 5 minutes
 engine = create_engine(
     DATABASE_URL,
     poolclass    = QueuePool,
@@ -24,7 +24,7 @@ engine = create_engine(
 
 
 # ─── SESSION ──────────────────────────────────────────────────────────────────
-# SessionLocal is a factory — calling SessionLocal() opens a new database session
+# SessionLocal is a factory - calling SessionLocal() opens a new database session
 # Every route that needs the database calls SessionLocal() and closes it in finally
 SessionLocal = sessionmaker(bind=engine)
 
@@ -36,7 +36,7 @@ Base = declarative_base()
 
 
 # ─── GENERATOR FUNCTION ───────────────────────────────────────────────────────
-# get_db() is a legacy generator — kept for any code that still uses next(get_db())
+# get_db() is a legacy generator - kept for any code that still uses next(get_db())
 # New routes should use SessionLocal() directly instead
 def get_db():
     # Open a session
