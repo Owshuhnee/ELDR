@@ -1,0 +1,139 @@
+/* Main page wrapper — gives breathing room on all sides */
+.page {
+  padding: 24px 20px;
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+/* Header row — back button and title sit side by side */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+/* Back button — plain, no background */
+.backButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 8px;
+  min-height: 44px;
+}
+
+/* Page title */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* Section wrapper — groups related content together */
+.section {
+  margin-bottom: 40px;
+}
+
+/* Section heading */
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+/* Each linked person shows as a card */
+.linkCard {
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+/* Name inside the card — larger and bold */
+.linkName {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 4px 0;
+}
+
+/* Email inside the card */
+.linkEmail {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  margin: 0 0 4px 0;
+}
+
+/* Relationship label inside the card */
+.linkRole {
+  font-size: 14px;
+  color: var(--color-primary);
+  margin: 0;
+  text-transform: capitalize;
+}
+
+/* Email input field */
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+/* Send button */
+.button {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+/* Success or error message shown after form submit */
+.message {
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+/* Empty state text when no links exist */
+.empty {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+}
+
+/* Loading state text */
+.loading {
+  font-size: 18px;
+  padding: 24px;
+  color: var(--color-text-secondary);
+}
+
+/* Remove button — sits below the link details */
+.removeButton {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: transparent;
+  color: #cc0000;
+  border: 2px solid #cc0000;
+  border-radius: 50px;
+  cursor: pointer;
+  min-height: 44px;
+}

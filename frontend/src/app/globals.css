@@ -1,13 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --color-background: #faf7f2;   /* warm cream */
-  --color-primary: #2d5a3d;      /* dark green */
-  --color-accent: #c4622d;       /* burnt orange */
+  /* === Mid-fi palette replacements =============================================
+     The values below replace the original warm-cream/dark-green theme to bring
+     the UI closer to the Figma mid-fi designs. Replaced originals are commented
+     out above each new value so the change is easy to trace.
+     ========================================================================= */
+
+  /* --color-background: #faf7f2; */
+  --color-background: #F5F5F0;        /* Warm White (mid-fi) */
+
+  /* --color-primary: #2d5a3d; */
+  --color-primary: #1A1A2E;           /* Navy (mid-fi) */
+
+  --color-accent: #c4622d;            /* burnt orange - accent colour only */
   --color-text: #1a1a1a;
   --color-text-muted: #555555;
   --color-surface: #ffffff;
-  --color-border: #ddd8cf;
+
+  /* --color-border: #ddd8cf; */
+  --color-border: #E8E8E4;            /* Border Grey (mid-fi) */
+
+  --color-nav-bg: #1A1A2E;            /* Dark Navy (mid-fi header) */
+
+  --color-nav-border: rgba(255, 255, 255, 0.12);  /* subtle divider on dark nav */
+
+  --color-nav-surface: #1A1A2E;       /* dark mobile bottom nav */
+  --color-nav-text-inactive: rgba(255, 255, 255, 0.55);
+
+  --color-nav-active: #2D7A5E;        /* Trust Green (mid-fi) */
+  --color-nav-text: #ffffff;
+
+  /* New tokens added for mid-fi */
+  --color-trust-green: #2D7A5E;       /* Trust Green */
+  --color-mint-surface: #E1F5EE;      /* Mint Surface */
+}
+
+.a11y-on {
+    --color-background: #ffffff;
+    --color-surface: #ffffff;
+    --color-text: #000000;
+    --color-text-muted: #333333;
+    --color-nav-bg: #ffffff;
+    --color-nav-surface: #ffffff;
+    --color-nav-border: #000000;
+    --color-nav-text: #000000;
+    --color-nav-text-inactive: #333333;
+    --color-nav-active: #000000;
+    --color-primary: #000000;
+    --color-accent: #000000;
+    font-size: 22px;
+}
+
+.a11y-on button:not(.toggle-btn) {
+    padding: 18px 32px;
+    min-height: 56px;
+    font-size: 20px;
 }
 
 *, *::before, *::after {
@@ -34,7 +82,95 @@ a {
   text-decoration: underline;
 }
 
+input[type="search"]:focus,
+input[type="text"]:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+}
+
 button, a {
   min-height: 44px;         /* minimum touch target */
   min-width: 44px;
+}
+
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  line-height: 1;
+  background-color: var(--color-mint-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.speak-btn:hover {
+  background-color: var(--color-trust-green);
+  transform: scale(1.06);
+}
+.speak-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.speak-btn:active {
+  transform: scale(0.94);
+}
+
+
+
+.desktop-nav {
+  display: flex;
+}
+
+.mobile-header {
+  display: none;
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--color-nav-surface);
+  border-top: 1px solid var(--color-nav-border);
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: var(--color-nav-bg);
+    border-bottom: 1px solid var(--color-nav-border);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 100;
+    color: var(--color-nav-text);
+  }
+  .mobile-nav {
+    display: flex;
+    z-index: 100;
+  }
+  body {
+    padding-bottom: 80px;
+    padding-top: 64px;
+  }
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

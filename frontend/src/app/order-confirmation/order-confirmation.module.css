@@ -1,0 +1,103 @@
+/* Page wrapper */
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* Centered success header */
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Large checkmark */
+.checkmark {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* Order Confirmed title */
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+/* Thank you subtitle */
+.subtitle {
+    color: var(--color-text-muted);
+}
+
+/* Shared card - reused for order details and items */
+.card {
+    background-color: var(--color-surface);
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Card section heading */
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+/* Each detail row: label on left, value on right */
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+/* Left side label */
+.rowLabel {
+    color: var(--color-text-muted);
+}
+
+/* Right side value */
+.rowValue {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* Status pill badge */
+.statusBadge {
+    color: white;
+    background-color: var(--color-primary);
+    padding: 0.1rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+}
+
+/* Divider before total */
+.divider {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Total label */
+.totalLabel {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+/* Total amount */
+.totalAmount {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+/* Continue shopping button wrapper */
+.actions {
+    margin-top: 1.5rem;
+}

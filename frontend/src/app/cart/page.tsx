@@ -1,147 +1,161 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from '@/components/ui/Button'
+import styles from './cart.module.css'
 
-const placeholderItems = [
-    { id: 1, product_id: 1, name: 'Ergonomic Grip Mug', price: 34.99, quantity: 1 },
-    { id: 2, product_id: 2, name: 'Large Button Remote', price: 24.99, quantity: 2 },
-    { id: 3, product_id: 3, name: 'Non-Slip Bath Mat', price: 19.99, quantity: 1 },
-]
+// Describes the shape of each cart item from the backend
+interface CartItem {
+  id:         number
+  product_id: number
+  name:       string
+  price:      number
+  quantity:   number
+}
 
 export default function CartPage() {
 
-    const [cartItems, setCartItems] = useState(placeholderItems)
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [loading, setLoading]     = useState(true)
+  const [error, setError]         = useState('')
 
-    function handleRemove(itemId: number) {
-        setCartItems(cartItems.filter(item => item.id !== itemId))
+  // Fetch cart items when the page loads
+  useEffect(() => {
+    fetchCart()
+  }, [])
+
+  const fetchCart = async () => {
+    try {
+      // Get the logged-in user from localStorage
+      const stored = localStorage.getItem('user')
+      if (!stored) {
+        window.location.href = '/login'
+        return
+      }
+      const user = JSON.parse(stored)
+
+      const res = await fetch(`http://localhost:5000/api/cart/${user.id}`, {
+        credentials: 'include'
+      })
+      const data = await res.json()
+
+      if (res.ok) {
+        setCartItems(data.cart || [])
+      } else {
+        setError(data.error || 'Could not load cart')
+      }
+    } catch {
+      setError('Could not connect to server')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const handleRemove = async (itemId: number) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/cart/remove/${itemId}`, {
+        method:      'DELETE',
+        credentials: 'include'
+      })
+      if (res.ok) {
+        // Remove the item from state so the UI updates immediately
+        setCartItems(cartItems.filter(item => item.id !== itemId))
+      }
+    } catch {
+      setError('Could not remove item')
+    }
+  }
 
-    return (
-        <main style={{
-            maxWidth: '800px',
-            margin: '0 auto',
-            padding: '2rem 1.5rem',
-        }}>
+  const handleQuantityChange = async (itemId: number, change: number) => {
+    // Update quantity in state immediately for responsive UI
+    setCartItems(cartItems.map(item =>
+      item.id === itemId
+        ? { ...item, quantity: Math.max(1, item.quantity + change) }
+        : item
+    ))
+  }
 
-            <h1 style={{
-                fontSize: '2rem',
-                fontWeight: 700,
-                color: 'var(--color-primary)',
-                marginBottom: '2rem',
-            }}>
-                Your Cart
-            </h1>
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-            <Link href="/">← Back to products</Link>
+  if (loading) return <p style={{ padding: '24px' }}>Loading cart...</p>
 
-            {cartItems.length === 0 ? (
-                <p style={{
-                    color: 'var(--color-text-muted)',
-                    marginTop: '2rem',
-                }}>
-                    Your cart is empty.
-                </p>
-            ) : (
-                <div style={{ marginTop: '2rem' }}>
+  return (
+    <main className={styles.page}>
 
-                    {cartItems.map(item => (
-                        <div key={item.id} style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '1.5rem',
-                            marginBottom: '1rem',
-                            backgroundColor: 'var(--color-surface)',
-                            borderRadius: '12px',
-                            border: '1px solid var(--color-border)',
-                        }}>
-                            <div>
-                                <p style={{
-                                    fontSize: '18px',
-                                    fontWeight: 600,
-                                    color: 'var(--color-text)',
-                                    marginBottom: '4px',
-                                }}>
-                                    {item.name}
-                                </p>
-                                <p style={{
-                                    color: 'var(--color-text-muted)',
-                                    fontSize: '16px',
-                                }}>
-                                    Qty: {item.quantity} × ${item.price.toFixed(2)}
-                                </p>
-                            </div>
+      <h1 className={styles.title}>Your Cart</h1>
 
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '1rem',
-                            }}>
-                                <p style={{
-                                    fontSize: '20px',
-                                    fontWeight: 700,
-                                    color: 'var(--color-text)',
-                                }}>
-                                    ${(item.price * item.quantity).toFixed(2)}
-                                </p>
+      {error && <p style={{ color: 'red', padding: '12px' }}>{error}</p>}
 
-                               <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
-                                    Remove
-                                </Button>
-                                
-                            </div>
-                        </div>
-                    ))}
+      {cartItems.length === 0 ? (
+        <p className={styles.empty}>Your cart is empty.</p>
+      ) : (
+        <div className={styles.itemList}>
 
-                    <div style={{
-                        borderTop: '2px solid var(--color-border)',
-                        paddingTop: '1.5rem',
-                        marginTop: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}>
-                        <p style={{
-                            fontSize: '20px',
-                            fontWeight: 700,
-                            color: 'var(--color-text)',
-                        }}>
-                            Total
-                        </p>
-                        <p style={{
-                            fontSize: '24px',
-                            fontWeight: 700,
-                            color: 'var(--color-primary)',
-                        }}>
-                            ${total.toFixed(2)}
-                        </p>
-                    </div>
+          {cartItems.map(item => (
+            <div key={item.id} className={styles.item}>
 
-                    <div style={{ marginTop: '1.5rem' }}>
-                        <Link
-                            href="/checkout"
-                            style={{
-                                display: 'block',
-                                textAlign: 'center',
-                                padding: '16px',
-                                backgroundColor: 'var(--color-primary)',
-                                color: 'white',
-                                borderRadius: '12px',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Proceed to Checkout
-                        </Link>
-                    </div>
+              {/* Product image placeholder */}
+              <div className={styles.itemImage} />
 
+              {/* Product name and price */}
+              <div className={styles.itemInfo}>
+                <p className={styles.itemName}>{item.name}</p>
+                <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
+
+                {/* Quantity controls */}
+                <div className={styles.quantity}>
+                  <button
+                    className={styles.quantityBtn}
+                    onClick={() => handleQuantityChange(item.id, -1)}
+                  >
+                    −
+                  </button>
+                  <span className={styles.quantityNumber}>{item.quantity}</span>
+                  <button
+                    className={styles.quantityBtn}
+                    onClick={() => handleQuantityChange(item.id, 1)}
+                  >
+                    +
+                  </button>
                 </div>
-            )}
-        </main>
-    )
+              </div>
+
+              {/* Item total and remove button */}
+              <div>
+                <p className={styles.itemTotal}>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </p>
+                <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
+                  Remove
+                </Button>
+              </div>
+
+            </div>
+          ))}
+
+          {/* Total row */}
+          <div className={styles.footer}>
+            <p className={styles.totalLabel}>Total</p>
+            <p className={styles.totalAmount}>${total.toFixed(2)}</p>
+          </div>
+
+          {/* Action buttons */}
+          <div className={styles.actions}>
+            <Link href="/checkout" style={{ textDecoration: 'none' }}>
+              <Button variant="primary" type="button">
+                Proceed to Checkout
+              </Button>
+            </Link>
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Button variant="secondary" type="button">
+                Continue Shopping
+              </Button>
+            </Link>
+          </div>
+
+        </div>
+      )}
+    </main>
+  )
 }

@@ -1,10 +1,10 @@
 'use client'
 
-// LOGIN PAGE
 import { useState } from 'react'
 import Button from '@/components/ui/Button'
 import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
+import styles from './login.module.css'
 
 export default function LoginPage() {
 
@@ -28,16 +28,20 @@ export default function LoginPage() {
         try {
             const response = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
 
             const data = await response.json()
 
-       if (response.ok) {
-            localStorage.setItem('user_id', data.user.id)
-            window.location.href = '/'
-        }
+            if (response.ok) {
+                // Save the full user object so any page can read role, name, email
+                localStorage.setItem('user', JSON.stringify(data.user))
+                window.location.href = '/'
+            } else {
+                setError(data.error || 'Login failed')
+            }
 
         } catch (err) {
             setError('Could not connect to server. Please try again.')
@@ -48,48 +52,26 @@ export default function LoginPage() {
 
     return (
         <AuthCard>
-            {/* LOGO */}
-           <img
-            src="/logo.png"
-            alt="ELDR Logo"
-            style={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-                margin: '0 auto 40px',
-            }} />
+            <img
+                src="/logo.png"
+                alt="ELDR Logo"
+                className={styles.logo}
+            />
 
-            {/* Error message */}
             {error && (
-                <p style={{
-                    backgroundColor: '#f8d7da',
-                    color: '#721c24',
-                    padding: '12px',
-                    borderRadius: '8px',
-                    marginBottom: '16px',
-                    textAlign: 'center',
-                }}>
-                    {error}
-                </p>
+                <p className={styles.error}>{error}</p>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField label="Email" type="email" id="email" name="email" onChange={handleChange} />
                 <InputField label="Password" type="password" id="password" name="password" onChange={handleChange} />
 
                 <Button variant="primary" type="submit">
                     {loading ? 'Logging in...' : 'Login'}
                 </Button>
-              
             </form>
 
-            {/* Bottom links */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '24px',
-            }}>
+            <div className={styles.links}>
                 <a href="/forgot-password">Forgot password?</a>
                 <a href="/register">Create Account</a>
             </div>

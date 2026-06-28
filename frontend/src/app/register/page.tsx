@@ -1,12 +1,12 @@
 'use client'
 
-// REGISTER PAGE
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
-
+import styles from './register.module.css'
+import shared from '@/components/ui/shared.module.css'
 
 export default function RegisterPage() {
 
@@ -29,24 +29,42 @@ export default function RegisterPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+        async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
         setMessage('')
         setError('')
 
+        // Basic validation
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match')
+            setLoading(false)
+            return
+        }
+
         try {
+            // Elders go through onboarding first
+            // Store their data temporarily and redirect
+            if (formData.role === 'elder') {
+                localStorage.setItem('pending_registration', JSON.stringify(formData))
+                router.push('/onboarding')
+                return
+            }
+
+            // Caregivers and sellers skip onboarding
+            // Register them directly and go to home
             const response = await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                method:      'POST',
+                credentials: 'include',
+                headers:     { 'Content-Type': 'application/json' },
+                body:        JSON.stringify(formData)
             })
 
             const data = await response.json()
 
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(data.user))
-                router.push('/onboarding')
+                router.push('/')
             } else {
                 setError(data.error)
             }
@@ -60,65 +78,22 @@ export default function RegisterPage() {
 
     return (
         <AuthCard>
-            
-            {/* Avatar or Profile picture placeholder */}
-            <div style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-border)',
-                margin: '0 auto 40px',
-            }} />
+            {/* Avatar placeholder */}
+            <div className={styles.avatar} />
 
             {/* Success message */}
-            {message && (
-                <p style={{
-                    backgroundColor: '#d4edda',
-                    color: '#155724',
-                    padding: '12px',
-                    borderRadius: '8px',
-                    marginBottom: '16px',
-                    textAlign: 'center',
-                }}>
-                    {message}
-                </p>
-            )}
+            {message && <p className={shared.success}>{message}</p>}
 
             {/* Error message */}
-            {error && (
-                <p style={{
-                    backgroundColor: '#f8d7da',
-                    color: '#721c24',
-                    padding: '12px',
-                    borderRadius: '8px',
-                    marginBottom: '16px',
-                    textAlign: 'center',
-                }}>
-                    {error}
-                </p>
-            )}
+            {error && <p className={shared.error}>{error}</p>}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={shared.form}>
 
-                {/* ROLE */}
-                <p style={{
-                    color: 'var(--color-text-muted)',
-                    marginBottom: '8px',
-                }}>Role</p>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '8px',
-                    marginBottom: '20px',
-                }}>
+                {/* Role selection */}
+                <p className={styles.roleLabel}>Role</p>
+                <div className={styles.roleGroup}>
                     {['Elder', 'Caregiver', 'Seller'].map((role) => (
-                        <label key={role} style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            color: 'var(--color-text)',
-                            cursor: 'pointer',
-                        }}>
+                        <label key={role} className={styles.roleOption}>
                             <input
                                 type="radio"
                                 name="role"
@@ -131,7 +106,6 @@ export default function RegisterPage() {
                     ))}
                 </div>
 
-                {/* INPUT FIELDS */}
                 <InputField label="First Name" id="firstName" name="firstName" onChange={handleChange} />
                 <InputField label="Last Name" id="lastName" name="lastName" onChange={handleChange} />
                 <InputField label="Phone Number" type="tel" id="phone" name="phone" onChange={handleChange} />
@@ -139,21 +113,13 @@ export default function RegisterPage() {
                 <InputField label="Password" type="password" id="password" name="password" onChange={handleChange} />
                 <InputField label="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} />
 
-                {/* REGISTER BUTTON */}
                 <Button variant="primary" type="submit">
                     {loading ? 'Registering...' : 'Register'}
                 </Button>
 
             </form>
 
-            {/* Back link */}
-            <a href="/login" style={{
-                display: 'block',
-                textAlign: 'center',
-                color: 'var(--color-text-muted)',
-                fontSize: '16px',
-                marginTop: '16px',
-            }}>
+            <a href="/login" className={styles.backLink}>
                 Back to Login
             </a>
         </AuthCard>

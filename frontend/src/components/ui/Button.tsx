@@ -1,5 +1,6 @@
-// Added a "danger" style variant
 import React from 'react'
+import { useAccessibility } from '../../context/AccessibilityContext'
+import styles from './Button.module.css'
 
 type Props = {
     variant: 'primary' | 'secondary' | 'danger'
@@ -18,46 +19,22 @@ export default function Button({
     disabled = false,
     fullWidth = true,
 }: Props) {
+    const { isAccessibilityMode } = useAccessibility()
 
-    const base: React.CSSProperties = {
-        width: fullWidth ? '100%' : 'auto',
-        borderRadius: '24px',
-        padding: '14px 24px',
-        fontSize: '18px',
-        fontWeight: 600,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.6 : 1,
-        border: 'none',
-        transition: 'opacity 0.2s',
-        minHeight: '44px',
-    }
-
-    const variants: Record<string, React.CSSProperties> = {
-        primary: {
-            ...base,
-            backgroundColor: 'var(--color-primary)',
-            color: 'white',
-        },
-        secondary: {
-            ...base,
-            backgroundColor: 'transparent',
-            color: 'var(--color-primary)',
-            border: '1px solid var(--color-border)',
-        },
-        danger: {
-            ...base,
-            backgroundColor: 'transparent',
-            color: '#721c24',
-            border: '1px solid #f5c6cb',
-        }
-    }
+    // Build class list based on variant and fullWidth
+    const classList = [
+        styles.btn,
+        styles[variant],
+        !fullWidth ? styles.inline : '',
+        isAccessibilityMode ? 'toggle-btn' : '',
+    ].join(' ')
 
     return (
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
-            style={variants[variant]}
+            className={classList}
         >
             {children}
         </button>

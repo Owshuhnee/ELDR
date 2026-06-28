@@ -45,8 +45,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-      
-      <div style={{
+        <div style={{
         minHeight: '100vh',
         backgroundColor: 'var(--color-background)',
         display: 'flex',
